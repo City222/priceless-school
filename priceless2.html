@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRICELESS INTERNATIONAL COMPUTER BASED SCHOOL | OWERRI NORTH, IMO STATE</title>
+    <style>
+        /* Base Styles - Clean & Light Theme */
+        :root {
+            --primary: #1a252f;
+            --brand-accent: #102a43;
+            --secondary: #d4af37;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --dark: #2c3e50;
+            --whatsapp-green: #25D366;
+            --slate-border: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
+        
+        /* Header & Navigation */
+        header { 
+            background: var(--white); 
+            color: var(--dark); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-area h2 { color: var(--brand-accent); font-size: 1.2rem; line-height: 1.3; }
+        .logo-area small { color: #666; font-weight: 600; }
+        
+        nav { display: flex; flex-wrap: wrap; gap: 5px; }
+        nav button { 
+            background: none; 
+            border: 1px solid transparent; 
+            color: var(--dark); 
+            margin-left: 2px; 
+            cursor: pointer; 
+            font-size: 0.95rem; 
+            padding: 8px 14px; 
+            border-radius: 6px; 
+            font-weight: 600;
+            transition: all 0.2s ease; 
+        }
+        nav button:hover, nav button.active-nav { 
+            color: var(--brand-accent); 
+            background: rgba(212, 175, 55, 0.15); 
+            border-color: var(--secondary);
+        }
+
+        /* Hero Sliding Background Banner */
+        .hero-slider-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+        }
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.45);
+        }
+        
+        .slide-1 { background-image: url('images/priceless.png'), url('https://via.placeholder.com/1200x500?text=Priceless+Child+Intl+School+Campus'); }
+        .slide-2 { background-image: url('images/computer lab.jpg'), url('https://via.placeholder.com/1200x500?text=Modern+CBT+Computer+Laboratory'); }
+        .slide-3 { background-image: url('images/nurs1.jpeg'), url('https://via.placeholder.com/1200x500?text=Excellence+in+Education+and+Activities'); }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            text-align: center;
+            padding: 0 20px;
+            max-width: 800px;
+        }
+        .hero-content h1 { font-size: 2.8rem; margin-bottom: 12px; color: var(--secondary); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 1.2rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .dot.active {
+            background: var(--secondary);
+            width: 28px;
+            border-radius: 10px;
+        }
+        
+        /* Section Headers */
+        .section-header { text-align: center; margin-bottom: 25px; }
+        .section-header h2 { color: var(--brand-accent); font-size: 2rem; margin-bottom: 5px; }
+        .section-header p { color: #666; font-size: 1rem; }
+        .badge { display: inline-block; background: var(--secondary); color: var(--brand-accent); font-weight: bold; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 8px; }
+
+        /* History & Owner Section */
+        .history-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .history-card { background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); margin-bottom: 30px; border: 1px solid #e2e8f0; }
+        .history-card h2 { color: var(--brand-accent); border-bottom: 3px solid var(--secondary); padding-bottom: 8px; margin-bottom: 15px; }
+        
+        .owner-profile { display: flex; flex-wrap: wrap; gap: 30px; align-items: center; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+        .owner-img-wrapper { flex: 0 0 250px; text-align: center; }
+        .owner-img { width: 220px; height: 260px; object-fit: cover; border-radius: 8px; border: 4px solid var(--secondary); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .owner-details { flex: 1; min-width: 280px; }
+        .owner-details h3 { color: var(--brand-accent); font-size: 1.6rem; margin-bottom: 5px; }
+        .owner-details .subtitle { color: #b8860b; font-weight: bold; display: block; margin-bottom: 15px; }
+
+        /* Gallery Grids */
+        .gallery-container { max-width: 1150px; margin: 40px auto; padding: 0 20px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 25px; }
+        .gallery-card { background: var(--white); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
+        .gallery-card:hover { transform: translateY(-6px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+        .gallery-card img, .gallery-card video { width: 100%; height: 210px; object-fit: cover; }
+        .gallery-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .gallery-title { font-weight: bold; color: var(--brand-accent); font-size: 1.05rem; margin-bottom: 5px; }
+        .gallery-desc { color: #555; font-size: 0.88rem; line-height: 1.4; }
+
+        /* Portals Container */
+        .portal-container { max-width: 950px; margin: 40px auto; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .portal-section { display: none; }
+        .portal-section.active { display: block; }
+
+        /* Forms & Inputs */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--brand-accent); }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn { background: var(--secondary); color: var(--brand-accent); padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: #c5951c; }
+
+        /* Admin Management Components */
+        .admin-tab-nav { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
+        .admin-tab-btn { background: var(--light); border: 1px solid var(--slate-border); padding: 8px 16px; border-radius: 5px; font-weight: bold; cursor: pointer; color: var(--dark); }
+        .admin-tab-btn.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+        
+        .mgmt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .mgmt-card { background: var(--light); border: 1px solid var(--slate-border); border-radius: 6px; padding: 20px; }
+        .mgmt-card h3 { color: var(--brand-accent); font-size: 1.1rem; margin-bottom: 12px; border-bottom: 2px solid var(--secondary); padding-bottom: 5px; }
+        .btn-action { background: var(--brand-accent); color: #fff; border: none; padding: 10px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        .btn-secondary { background: var(--secondary); color: var(--brand-accent); }
+        .btn-action:hover { opacity: 0.9; }
+
+        .upload-box { background: #f0fdf4; border: 2px dashed #22c55e; padding: 20px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+        .upload-box-video { background: #eff6ff; border: 2px dashed #3b82f6; }
+
+        .credential-box { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.85rem; color: #065f46; display: none; }
+        
+        .roster-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.88rem; }
+        .roster-table th, .roster-table td { border: 1px solid var(--slate-border); padding: 9px; text-align: left; }
+        .roster-table th { background: var(--brand-accent); color: white; }
+        .roster-table tr:nth-child(even) { background: #f8f9fa; }
+        .badge-role { padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
+        .role-admin { background: #fee2e2; color: #991b1b; }
+        .role-teacher { background: #e0f2fe; color: #0369a1; }
+        .role-student { background: #fef3c7; color: #92400e; }
+
+        /* Exam Generation UI */
+        .question-block { background: var(--light); padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--brand-accent); border-radius: 4px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+
+        /* Testimonials */
+        .testimonials { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .testimonial-card { background: var(--white); padding: 20px; border-radius: 8px; border-top: 4px solid var(--secondary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
+        
+        /* Footer */
+        footer { background: var(--white); color: var(--dark); text-align: center; padding: 25px 20px; margin-top: 50px; border-top: 1px solid #e2e8f0; font-weight: 500; }
+
+        /* Floating WhatsApp Button Widget */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--whatsapp-green);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            color: white;
+        }
+        .whatsapp-icon { width: 26px; height: 26px; fill: white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="images/kid logo.png" alt="Aukland Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50?text=LOGO'">
+            <div>
+                <h2>PRICELESS CHILD INT'L STANDARD & COMPUTER BASED SCHOOL</h2>
+                <small>SIR HENRY AKUJIOBI STREET, AKWAKUMA, OWERRI NORTH, IMO STATE</small>
+            </div>
+        </div>
+        <nav>
+            <button id="nav-home" class="active-nav" onclick="switchPortal('home')">Home</button>
+            <button id="nav-history" onclick="switchPortal('history')">History & Owner</button>
+            <button id="nav-student-gallery" onclick="switchPortal('student-gallery')">Student Gallery</button>
+            <button id="nav-activities-gallery" onclick="switchPortal('activities-gallery')">Activities Gallery</button>
+            <button id="nav-student" onclick="switchPortal('student')">Student Portal</button>
+            <button id="nav-admin" onclick="switchPortal('admin')">Admin</button>
+            <button id="nav-parent" onclick="switchPortal('parent')">Parents</button>
+            <button id="nav-admission" onclick="switchPortal('admission')">Admissions</button>
+        </nav>
+    </header>
+
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.me/2348032571879?text=Hello%20Priceless%20Child%20International%20School,%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.6-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        
+        <!-- Home / Welcome View -->
+        <div id="home" class="portal-section active">
+            <!-- Sliding Background Hero Section -->
+            <section class="hero-slider-container">
+                <div class="hero-slide slide-1 active">
+                    <div class="hero-content">
+                        <h1>Excellence in Education</h1>
+                        <p>Providing top-tier academic standards integrated with modern technology.</p>
+                    </div>
+                </div>
+                <div class="hero-slide slide-2">
+                    <div class="hero-content">
+                        <h1>Computer Based Testing (CBT)</h1>
+                        <p>Empowering students with hands-on digital skills and state-of-the-art computer laboratories.</p>
+                    </div>
+                </div>
+                <div class="hero-slide slide-3">
+                    <div class="hero-content">
+                        <h1>Nurturing Future Leaders</h1>
+                        <p>Building character, discipline, cultural heritage, and academic distinction for every child.</p>
+                    </div>
+                </div>
+
+                <div class="slider-dots">
+                    <span class="dot active" onclick="setSlide(0)"></span>
+                    <span class="dot" onclick="setSlide(1)"></span>
+                    <span class="dot" onclick="setSlide(2)"></span>
+                </div>
+            </section>
+
+            <section style="text-align: center; margin-top: 40px;">
+                <span class="badge">Community Feedback</span>
+                <h2>What Our Community Says</h2>
+            </section>
+            
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <p>"The dedicated teachers and the new online portal have made tracking my child's progress in JSS3 incredibly easy."</p>
+                    <br><strong>- Mrs. Nzenwa (Parent)</strong>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Moving to SS1 was a big step, but Priceless Computer Based School prepared me perfectly. The CBT exams are exactly what we need."</p>
+                    <br><strong>- Jonathan Lasbrey (Student)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- History & Owner View -->
+        <div id="history" class="portal-section">
+            <div class="history-container">
+                <div class="history-card">
+                    <h2>Our History & Vision</h2>
+                    <p>Established in Akwakuma, Owerri North, Imo State, <strong>Priceless Child International Standard & Computer Based School</strong> was founded with a passion for integrating modern digital literacy with core academic standards.</p>
+                    <br>
+                    <p>Our curriculum blends state educational guidelines with modern technology, ensuring every student develops strong digital competency alongside academic excellence, moral discipline, and leadership values.</p>
+                </div>
+
+                <div class="owner-profile">
+                    <div class="owner-img-wrapper">
+                        <img src="images/owner.jpg" alt="School Owner / Proprietor" class="owner-img" onerror="this.src='https://via.placeholder.com/220x260?text=Proprietor+Photo'">
+                    </div>
+                    <div class="owner-details">
+                        <h3>School Proprietor & Founder</h3>
+                        <span class="subtitle">Priceless Child International Standard School</span>
+                        <p><em>"Our vision is to build a modern learning standard where technology meets academic integrity. Every child is priceless, and with the right digital skills and academic foundation, their potential is limitless."</em></p>
+                        <br>
+                        <p><strong>Address:</strong> Sir Henry Akujiobi Street, Akwakuma, Owerri North, Imo State.</p>
+                        <p><strong>WhatsApp / Phone:</strong> +234 803 257 1879</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Gallery Section -->
+        <div id="student-gallery" class="portal-section">
+            <div class="gallery-container">
+                <div class="section-header">
+                    <span class="badge">Student Life</span>
+                    <h2>Student Gallery</h2>
+                    <p>Celebrating academic achievements, leadership, classroom life, and student life at Priceless Child Int'l School.</p>
+                </div>
+                
+                <div class="gallery-grid" id="student-gallery-grid">
+                    <div class="gallery-card">
+                        <img src="images/writing cbt.jpg" alt="CBT Examination Session" onerror="this.src='https://via.placeholder.com/400x250?text=CBT+Exam+Session'">
+                        <div class="gallery-body">
+                            <div class="gallery-title">1. CBT Examinations in Progress</div>
+                            <div class="gallery-desc"> students taking terminal examinations using our high-speed Computer Based Testing portal.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/nurs5.jpeg" alt="Student Prefects Council" onerror="this.src='https://via.placeholder.com/400x250?text=Student+Prefects+Council'">
+                        <div class="gallery-body">
+                            <div class="gallery-title">2. Student paying attention when class is going on</div>
+                            <div class="gallery-desc">Student actively participating in their lessons and showing dedication to their studies.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/nurs3.jpeg" alt="Classroom Interactive Learning" onerror="this.src='https://via.placeholder.com/400x250?text=Classroom+Learning'">
+                        <div class="gallery-body">
+                            <div class="gallery-title">3. Interactive Classroom Sessions</div>
+                            <div class="gallery-desc">Active learning environments where students engage in problem-solving and collaborative discussions.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/priceless lab.jpg" alt="Science Laboratory Practical" onerror="this.src='https://via.placeholder.com/400x250?text=Science+Lab+Practicals'">
+                        <div class="gallery-body">
+                            <div class="gallery-title">4. Science Laboratory Practical</div>
+                            <div class="gallery-desc">Students performing practical experiments in Chemistry, Biology, and Physics under expert teacher supervision.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/hub.jpg" alt="E-Library & Study Center" onerror="this.src='https://via.placeholder.com/400x250?text=E-Library+%26+Research'">
+                        <div class="gallery-body">
+                            <div class="gallery-title">5. E-Library & Research Hub</div>
+                            <div class="gallery-desc">Quiet, resourced study area equipped with textbooks and online research portals for student study.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/award.jpg" alt="Academic Excellence Awards" onerror="this.src='https://via.placeholder.com/400x250?text=Academic+Excellence+Awards'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Academic Excellence Awardees</div>
+                            <div class="gallery-desc">Recognizing top-performing students across various subjects and term end evaluations.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Gallery Section  -->
+        <div id="activities-gallery" class="portal-section">
+            <div class="gallery-container">
+                <div class="section-header">
+                    <span class="badge">Co-Curricular & Events</span>
+                    <h2>Activities & Events Gallery </h2>
+                    <p>Highlighting sports, cultural heritage, exhibitions, debates, and outdoor excursions.</p>
+                </div>
+                
+                <div class="gallery-grid" id="activities-gallery-grid">
+                    <div class="gallery-card">
+                        <img src="images/sports.jpg" alt="Inter-House Sports Competition" onerror="this.src='https://via.placeholder.com/400x250?text=Inter-House+Sports'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Annual Inter-House Sports</div>
+                            <div class="gallery-desc">Track and field athletics, relay races, and team sports fostering teamwork, fitness, and healthy sportsmanship.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/royal.jpg" alt="Cultural Heritage Celebration" onerror="this.src='https://via.placeholder.com/400x250?text=Cultural+Day+Exhibition'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Cultural Heritage Day</div>
+                            <div class="gallery-desc">Promoting rich cultural diversity, traditional Igbo attire, music, dance, and indigenous arts.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/fair.jpg" alt="Science & Tech Exhibition" onerror="this.src='https://via.placeholder.com/400x250?text=Science+%26+Tech+Fair'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Science & Technology Fair</div>
+                            <div class="gallery-desc">Young innovators displaying robotic models, GSM repair projects, and sustainable technology prototypes.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/debate.jpg" alt="Debate & Public Speaking" onerror="this.src='https://via.placeholder.com/400x250?text=Debate+Inter-School'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Interschool Debate Championship</div>
+                            <div class="gallery-desc">Students demonstrating articulate public speaking and logical reasoning in current affairs debate contests.</div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="images/field.jpg" alt="Educational Excursion" onerror="this.src='https://via.placeholder.com/400x250?text=Educational+Excursion'">
+                        <div class="gallery-body">
+                            <div class="gallery-title"> Educational Field Trips</div>
+                            <div class="gallery-desc">Outside-the-classroom learning visits to industrial sites, historic landmarks, and research centers.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portals Container -->
+        <div class="portal-container" id="portals" style="display:none;">
+
+            <!-- Student Portal -->
+            <div id="student-portal" class="portal-section">
+                <h2>Student Portal: Online Exam</h2>
+                <p>Welcome. Please select your class and exam subject to begin your CBT evaluation.</p>
+                <br>
+                <div class="form-group">
+                    <label>Class Level</label>
+                    <select id="std-exam-class">
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>JSS 3</option>
+                        <option>SS 1</option>
+                        <option>SS 2</option>
+                        <option>SS 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Subject Exam</label>
+                    <select id="std-exam-subject">
+                        <option value="">-- Choose Subject --</option>
+                        <option value="English">English</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Agricultural Science">Agricultural Science</option>
+                        <option value="Animal husbandry">Animal husbandry</option>
+                        <option value="Financial Accounting">Financial Accounting</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Economics">Economics</option>
+                        <option value="Home Management">Home Management</option>
+                        <option value="Nutrition">Nutrition</option>
+                        <option value="Digital Technology">Digital Technology</option>
+                        <option value="Basic Science">Basic Science</option>
+                        <option value="Basic Technology">Basic Technology</option>
+                        <option value="Physical and Health Education">Physical and Health Education</option>
+                        <option value="Arithmetic">Arithmetic</option>
+                        <option value="Algebra">Algebra</option>
+                        <option value="Geometry">Geometry</option>
+                        <option value="Comprehension">Comprehension</option>
+                        <option value="Comparative">Comparative</option>
+                        <option value="Essay">Essay</option>
+                        <option value="Lexis and Structure">Lexis and Structure</option>
+                        <option value="C.R.S">C.R.S</option>
+                        <option value="Igbo language">Igbo language</option>
+                        <option value="Business Studies">Business Studies</option>
+                        <option value="Social Studies">Social Studies</option>
+                        <option value="Civic Education">Civic Education</option>
+                        <option value="History">History</option>
+                        <option value="Cultural &Creative Arts">Cultural & Creative Arts</option>
+                        <option value="Computer Hardware and GSM Repairs">Computer Hardware and GSM Repairs</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="startCbtExam()">Start Examination</button>
+            </div>
+
+            <!-- Admin Portal -->
+            <div id="admin-portal" class="portal-section">
+                <h2>Admin Control Center</h2>
+                
+                <!-- Admin Tabs -->
+                <div class="admin-tab-nav">
+                    <button class="admin-tab-btn active" id="tab-btn-users" onclick="showAdminTab('users')">User Accounts</button>
+                    <button class="admin-tab-btn" id="tab-btn-exams" onclick="showAdminTab('exams')">Exam CBT & File Upload</button>
+                    <button class="admin-tab-btn" id="tab-btn-events" onclick="showAdminTab('events')">Upload Events & Photos</button>
+                    <button class="admin-tab-btn" id="tab-btn-videos" onclick="showAdminTab('videos')">Upload Video</button>
+                </div>
+
+                <!-- Tab 1: Account Creation & Credential Issuance -->
+                <div id="admin-sub-users">
+                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Issue teacher login accounts and generate automated student admission numbers with PINs.</p>
+
+                    <div class="mgmt-grid">
+                        <div class="mgmt-card">
+                            <h3>Register New Teacher</h3>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="tch-fullname" placeholder="e.g. Mr. Emmanuel Okoro">
+                            </div>
+                            <div class="form-group">
+                                <label>Assigned Subject</label>
+                                <input type="text" id="tch-subject" placeholder="e.g. Computer Hardware and GSM Repairs">
+                            </div>
+                            <div class="form-group">
+                                <label>Default Password</label>
+                                <input type="text" id="tch-password" value="Teacher2026!" readonly style="background: #e2e8f0; font-weight: bold;">
+                            </div>
+                            <button class="btn-action" onclick="registerTeacher()">Create Teacher Account</button>
+                            <div id="tch-success-box" class="credential-box"></div>
+                        </div>
+
+                        <div class="mgmt-card">
+                            <h3>Admit New Student</h3>
+                            <div class="form-group">
+                                <label>Student Full Name</label>
+                                <input type="text" id="std-fullname" placeholder="e.g. Chidi Nzenwa">
+                            </div>
+                            <div class="form-group">
+                                <label>Class Level</label>
+                                <select id="std-class">
+                                    <option value="JSS 1">JSS 1</option>
+                                    <option value="JSS 2">JSS 2</option>
+                                    <option value="JSS 3">JSS 3</option>
+                                    <option value="SS 1">SS 1</option>
+                                    <option value="SS 2">SS 2</option>
+                                    <option value="SS 3">SS 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Auto Admission Format</label>
+                                <input type="text" value="PCI/2026/XXX (Auto)" readonly style="background: #e2e8f0; font-weight: bold;">
+                            </div>
+                            <button class="btn-action btn-secondary" onclick="admitStudent()">Admit & Generate PIN</button>
+                            <div id="std-success-box" class="credential-box"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--brand-accent); margin-top: 25px;">Registered Accounts Directory</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="roster-table">
+                            <thead>
+                                <tr>
+                                    <th>System ID / Adm No</th>
+                                    <th>Full Name</th>
+                                    <th>Role</th>
+                                    <th>Subject / Class</th>
+                                    <th>Issued Credentials</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-roster-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Upload Examination (Word/PDF or Manual) -->
+                <div id="admin-sub-exams" style="display: none;">
+                    <h3>Upload CBT Examination Questions</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Upload complete question papers via Word (.doc, .docx) or PDF format, or compose questions manually below.</p>
+                    
+                    <div class="form-group">
+                        <label>Target Subject</label>
+                        <select id="exam-upload-subject">
+                            <option value="English">English</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Agricultural Science">Agricultural Science</option>
+                            <option value="Animal husbandry">Animal husbandry</option>
+                            <option value="Financial Accounting">Financial Accounting</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Home Management">Home Management</option>
+                            <option value="Nutrition">Nutrition</option>
+                            <option value="Digital Technology">Digital Technology</option>
+                            <option value="Basic Science">Basic Science</option>
+                            <option value="Basic Technology">Basic Technology</option>
+                            <option value="Physical and Health Education">Physical and Health Education</option>
+                            <option value="Arithmetic">Arithmetic</option>
+                            <option value="Algebra">Algebra</option>
+                            <option value="Geometry">Geometry</option>
+                            <option value="Comprehension">Comprehension</option>
+                            <option value="Comparative">Comparative</option>
+                            <option value="Essay">Essay</option>
+                            <option value="Lexis and Structure">Lexis and Structure</option>
+                            <option value="C.R.S">C.R.S</option>
+                            <option value="Igbo language">Igbo language</option>
+                            <option value="Business Studies">Business Studies</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Civic Education">Civic Education</option>
+                            <option value="History">History</option>
+                            <option value="Computer Hardware and GSM Repairs">Computer Hardware and GSM Repairs</option>
+                        </select>
+                    </div>
+
+                    <!-- File Upload Option (Word / PDF) -->
+                    <div class="upload-box">
+                        <h4 style="color: var(--brand-accent); margin-bottom: 8px;">Option A: Batch Upload Word or PDF Question Document</h4>
+                        <p style="font-size: 0.85rem; color: #555; margin-bottom: 12px;">Supports Microsoft Word (.doc, .docx) and Portable Document Format (.pdf) exam papers.</p>
+                        <input type="file" id="exam-file-input" accept=".doc,.docx,.pdf" style="max-width: 400px; margin: 0 auto 10px auto;">
+                        <button class="btn" onclick="uploadExamDocument()">Process & Import Exam File</button>
+                        <div id="exam-file-status" class="credential-box" style="margin-top: 15px;"></div>
+                    </div>
+
+                    <hr style="margin: 25px 0; border: none; border-top: 1px solid var(--slate-border);">
+
+                    <!-- Manual Question Builder -->
+                    <h4>Option B: Manual Question Generator</h4>
+                    <br>
+                    <div class="form-group">
+                        <label>Select Academic Term</label>
+                        <select id="exam-term" onchange="generateQuestionFields()">
+                            <option value="1">First Term (20 Objectives)</option>
+                            <option value="2">Second Term (20 Objectives)</option>
+                            <option value="3">Third Term (40 Objectives)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="question-upload-area"></div>
+                    <button class="btn" style="margin-top: 15px;">Publish Manual Exam to Portal</button>
+                </div>
+
+                <!-- Tab 3: Upload Gallery Photos & Events -->
+                <div id="admin-sub-events" style="display: none;">
+                    <h3>Publish School Events & Gallery Media</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Publish upcoming events, announcements, and photos directly into the Student or Activities Gallery.</p>
+
+                    <div class="mgmt-card">
+                        <div class="form-group">
+                            <label>Target Gallery / Event Section</label>
+                            <select id="event-target-gallery">
+                                <option value="activities">Activities & Events Gallery</option>
+                                <option value="student">Student Life Gallery</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Event Title</label>
+                            <input type="text" id="event-title" placeholder="e.g. 2026 Inter-House Sports / Cultural Day Celebration">
+                        </div>
+                        <div class="form-group">
+                            <label>Event Date</label>
+                            <input type="date" id="event-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Description & Highlights</label>
+                            <textarea id="event-desc" rows="3" placeholder="Brief details regarding scheduled activities, program schedule, or student achievements..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Banner/Photo OR Enter Image Path</label>
+                            <input type="file" id="event-img-file" accept="image/*" style="margin-bottom: 8px;">
+                            <input type="text" id="event-img-url" placeholder="or relative path e.g. images/my-event.jpg">
+                        </div>
+                        <button class="btn-action" onclick="publishGalleryEvent()">Publish Event to Website</button>
+                        <div id="event-success-box" class="credential-box"></div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Upload Video Module -->
+                <div id="admin-sub-videos" style="display: none;">
+                    <h3>Upload Educational & Event Videos</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Upload MP4 video files or paste media links for school events, CBT practical tutorials, and lectures.</p>
+
+                    <div class="mgmt-card">
+                        <div class="form-group">
+                            <label>Video Title</label>
+                            <input type="text" id="video-title" placeholder="e.g. Computer Hardware Practical Guide / Inter-House Relay Finals">
+                        </div>
+                        <div class="form-group">
+                            <label>Video Category</label>
+                            <select id="video-category">
+                                <option value="activities">School Activity & Event Video</option>
+                                <option value="tutorial">CBT & Science Laboratory Tutorial</option>
+                                <option value="announcement">Principal's Address / Announcement</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Video Description</label>
+                            <textarea id="video-desc" rows="3" placeholder="Summary of the video content..."></textarea>
+                        </div>
+                        
+                        <div class="upload-box upload-box-video">
+                            <h4 style="color: var(--brand-accent); margin-bottom: 8px;">Select Video File (.mp4, .webm) or Paste URL</h4>
+                            <p style="font-size: 0.85rem; color: #555; margin-bottom: 12px;">Supports direct MP4/WebM video uploads or YouTube/embedded video links.</p>
+                            <input type="file" id="video-file-input" accept="video/mp4,video/webm,video/ogg" style="max-width: 400px; margin: 0 auto 10px auto;">
+                            <input type="text" id="video-url-input" placeholder="or enter external video URL (https://...)">
+                        </div>
+                        
+                        <button class="btn-action" onclick="uploadVideo()">Publish Video to Portal</button>
+                        <div id="video-success-box" class="credential-box"></div>
+                    </div>
+
+                    <h3 style="color: var(--brand-accent); margin-top: 25px;">Uploaded Videos Library</h3>
+                    <div id="admin-video-library" class="gallery-grid" style="margin-top: 15px;">
+                        <!-- Uploaded videos preview grid -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Parent Portal -->
+            <div id="parent-portal" class="portal-section">
+                <h2>Parent Portal</h2>
+                <div class="form-group">
+                    <label>Student Admission Number</label>
+                    <input type="text" placeholder="e.g., PCI/2026/001">
+                </div>
+                <div class="form-group">
+                    <label>Portal PIN</label>
+                    <input type="password" placeholder="Enter PIN">
+                </div>
+                <button class="btn">View Child's Result</button>
+            </div>
+
+            <!-- Admission Portal -->
+            <div id="admission-portal" class="portal-section">
+                <h2>Admission Application</h2>
+                <div class="form-group">
+                    <label>Applicant Full Name</label>
+                    <input type="text" placeholder="First Name, Last Name">
+                </div>
+                <div class="form-group">
+                    <label>Class Seeking Admission Into</label>
+                    <select>
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>JSS 3</option>
+                        <option>SS 1</option>
+                        <option>SS 2</option>
+                        <option>SS 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Upload Previous Result (PDF)</label>
+                    <input type="file" accept=".pdf">
+                </div>
+                <button class="btn">Submit Application</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PRICELESS COMPUTER BASED SCHOOL. All Rights Reserved.</p>
+        <p style="margin-top: 5px; font-size: 0.88rem; color: #777;">Sir Henry Akujiobi Street, Akwakuma, Owerri North, Imo State | WhatsApp: +234 803 257 1879</p>
+    </footer>
+
+    <script>
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.dot');
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        function setSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function nextSlide() {
+            let next = (currentSlide + 1) % slides.length;
+            setSlide(next);
+        }
+
+        // View Switcher
+        function switchPortal(target) {
+            document.querySelectorAll('.portal-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-nav'));
+
+            const activeNavBtn = document.getElementById('nav-' + target);
+            if(activeNavBtn) activeNavBtn.classList.add('active-nav');
+
+            const mainViews = ['home', 'history', 'student-gallery', 'activities-gallery'];
+
+            if(mainViews.includes(target)) {
+                document.getElementById('portals').style.display = 'none';
+                document.getElementById(target).classList.add('active');
+            } else {
+                document.getElementById('home').classList.remove('active');
+                document.getElementById('portals').style.display = 'block';
+                
+                const portalElem = document.getElementById(target + '-portal');
+                if(portalElem) portalElem.classList.add('active');
+                
+                if(target === 'admin') {
+                    renderRoster();
+                    generateQuestionFields();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Admin Inner Tab Navigation
+        function showAdminTab(tabName) {
+            document.getElementById('admin-sub-users').style.display = (tabName === 'users') ? 'block' : 'none';
+            document.getElementById('admin-sub-exams').style.display = (tabName === 'exams') ? 'block' : 'none';
+            document.getElementById('admin-sub-events').style.display = (tabName === 'events') ? 'block' : 'none';
+            document.getElementById('admin-sub-videos').style.display = (tabName === 'videos') ? 'block' : 'none';
+            
+            document.getElementById('tab-btn-users').classList.toggle('active', tabName === 'users');
+            document.getElementById('tab-btn-exams').classList.toggle('active', tabName === 'exams');
+            document.getElementById('tab-btn-events').classList.toggle('active', tabName === 'events');
+            document.getElementById('tab-btn-videos').classList.toggle('active', tabName === 'videos');
+        }
+
+        /* User Management Storage */
+        const STORAGE_KEY = 'PCI_SCHOOL_USERS';
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        }
+
+        function initSuperAdmin() {
+            let users = getUsers();
+            if (!users.some(u => u.role === 'Admin')) {
+                users.push({
+                    id: 'ADMIN-001',
+                    name: 'System Administrator',
+                    role: 'Admin',
+                    detail: 'Super User',
+                    username: 'PCI-ADMIN',
+                    credential: 'AdminPass2026!',
+                    dateCreated: new Date().toLocaleDateString()
+                });
+                saveUsers(users);
+            }
+        }
+
+        function registerTeacher() {
+            const name = document.getElementById('tch-fullname').value.trim();
+            const subject = document.getElementById('tch-subject').value.trim();
+            const defaultPassword = document.getElementById('tch-password').value;
+
+            if (!name || !subject) {
+                alert('Please enter both teacher name and assigned subject.');
+                return;
+            }
+
+            let users = getUsers();
+            const firstName = name.split(' ')[0].toLowerCase().replace(/[^a-z]/g, '');
+            const username = `tch_${firstName}${Math.floor(10 + Math.random() * 90)}`;
+
+            users.push({
+                id: `TCH-${Math.floor(100 + Math.random() * 900)}`,
+                name: name,
+                role: 'Teacher',
+                detail: subject,
+                username: username,
+                credential: defaultPassword,
+                dateCreated: new Date().toLocaleDateString()
+            });
+            saveUsers(users);
+
+            const box = document.getElementById('tch-success-box');
+            box.style.display = 'block';
+            box.innerHTML = `<strong>Teacher Registered!</strong><br>Username: <code>${username}</code><br>Password: <code>${defaultPassword}</code>`;
+
+            document.getElementById('tch-fullname').value = '';
+            document.getElementById('tch-subject').value = '';
+            renderRoster();
+        }
+
+        function admitStudent() {
+            const name = document.getElementById('std-fullname').value.trim();
+            const studentClass = document.getElementById('std-class').value;
+
+            if (!name) {
+                alert('Please enter student full name.');
+                return;
+            }
+
+            let users = getUsers();
+            const studentCount = users.filter(u => u.role === 'Student').length + 1;
+            
+            const currentYear = new Date().getFullYear();
+            const sequenceStr = String(studentCount).padStart(3, '0');
+            const admissionNo = `PCI/${currentYear}/${sequenceStr}`;
+            const defaultPin = Math.floor(1000 + Math.random() * 9000).toString();
+
+            users.push({
+                id: admissionNo,
+                name: name,
+                role: 'Student',
+                detail: studentClass,
+                username: admissionNo,
+                credential: `PIN: ${defaultPin}`,
+                dateCreated: new Date().toLocaleDateString()
+            });
+            saveUsers(users);
+
+            const box = document.getElementById('std-success-box');
+            box.style.display = 'block';
+            box.innerHTML = `<strong>Student Admitted!</strong><br>Admission No: <code>${admissionNo}</code><br>Access PIN: <code>${defaultPin}</code>`;
+
+            document.getElementById('std-fullname').value = '';
+            renderRoster();
+        }
+
+        function renderRoster() {
+            const users = getUsers();
+            const tbody = document.getElementById('user-roster-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const roleClass = user.role === 'Teacher' ? 'role-teacher' : (user.role === 'Student' ? 'role-student' : 'role-admin');
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${user.id}</strong></td>
+                        <td>${user.name}</td>
+                        <td><span class="badge-role ${roleClass}">${user.role}</span></td>
+                        <td>${user.detail}</td>
+                        <td>User: <code>${user.username}</code> | Secret: <code>${user.credential}</code></td>
+                    </tr>
+                `;
+            });
+        }
+
+        /* CBT Exam Document File Upload */
+        function uploadExamDocument() {
+            const fileInput = document.getElementById('exam-file-input');
+            const subject = document.getElementById('exam-upload-subject').value;
+            const statusBox = document.getElementById('exam-file-status');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please select a Word (.doc, .docx) or PDF file to upload.');
+                return;
+            }
+
+            const fileName = fileInput.files[0].name;
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `<strong>Exam Paper Uploaded Successfully!</strong><br>Subject: <b>${subject}</b><br>File Processed: <code>${fileName}</code><br>Questions successfully attached to CBT examination engine.`;
+            fileInput.value = '';
+        }
+
+        /* Event / Gallery Upload Handler */
+        function publishGalleryEvent() {
+            const galleryTarget = document.getElementById('event-target-gallery').value;
+            const title = document.getElementById('event-title').value.trim();
+            const eventDate = document.getElementById('event-date').value;
+            const desc = document.getElementById('event-desc').value.trim();
+            const fileInput = document.getElementById('event-img-file');
+            const urlInput = document.getElementById('event-img-url').value.trim();
+            const statusBox = document.getElementById('event-success-box');
+
+            if (!title || !desc) {
+                alert('Please enter event title and description.');
+                return;
+            }
+
+            let imageSrc = 'https://via.placeholder.com/400x250?text=New+Uploaded+Event';
+
+            if (fileInput.files && fileInput.files[0]) {
+                imageSrc = URL.createObjectURL(fileInput.files[0]);
+            } else if (urlInput !== '') {
+                imageSrc = urlInput;
+            }
+
+            const targetGridId = galleryTarget === 'student' ? 'student-gallery-grid' : 'activities-gallery-grid';
+            const gridElem = document.getElementById(targetGridId);
+
+            const cardCount = gridElem.querySelectorAll('.gallery-card').length + 1;
+            const dateStr = eventDate ? ` | Date: ${eventDate}` : '';
+
+            const cardHTML = `
+                <div class="gallery-card">
+                    <img src="${imageSrc}" alt="${title}" onerror="this.src='https://via.placeholder.com/400x250?text=Event+Image'">
+                    <div class="gallery-body">
+                        <div class="gallery-title">${cardCount}. ${title}</div>
+                        <div class="gallery-desc">${desc}${dateStr}</div>
+                    </div>
+                </div>
+            `;
+
+            gridElem.innerHTML += cardHTML;
+
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `<strong>Event Published!</strong> Event Card #${cardCount} added to <b>${galleryTarget === 'student' ? 'Student Gallery' : 'Activities & Events Gallery'}</b>.`;
+
+            document.getElementById('event-title').value = '';
+            document.getElementById('event-date').value = '';
+            document.getElementById('event-desc').value = '';
+            document.getElementById('event-img-url').value = '';
+            fileInput.value = '';
+        }
+
+        /* Video Upload Handler */
+        function uploadVideo() {
+            const title = document.getElementById('video-title').value.trim();
+            const category = document.getElementById('video-category').value;
+            const desc = document.getElementById('video-desc').value.trim();
+            const fileInput = document.getElementById('video-file-input');
+            const urlInput = document.getElementById('video-url-input').value.trim();
+            const statusBox = document.getElementById('video-success-box');
+
+            if (!title) {
+                alert('Please enter a title for the video.');
+                return;
+            }
+
+            if (!fileInput.files[0] && urlInput === '') {
+                alert('Please select a video file (.mp4) or enter a video URL.');
+                return;
+            }
+
+            let videoSource = urlInput;
+            if (fileInput.files && fileInput.files[0]) {
+                videoSource = URL.createObjectURL(fileInput.files[0]);
+            }
+
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `<strong>Video Published Successfully!</strong><br>Title: <b>${title}</b><br>Category: <code>${category}</code>`;
+
+            const library = document.getElementById('admin-video-library');
+            if (library) {
+                const videoCard = `
+                    <div class="gallery-card">
+                        <video controls style="width: 100%; height: 210px; background: #000;">
+                            <source src="${videoSource}" type="video/mp4">
+                            Your browser does not support HTML video playback.
+                        </video>
+                        <div class="gallery-body">
+                            <div class="gallery-title">${title}</div>
+                            <div class="gallery-desc">${desc || 'Educational/Event video playback.'}</div>
+                        </div>
+                    </div>
+                `;
+                library.innerHTML += videoCard;
+            }
+
+            document.getElementById('video-title').value = '';
+            document.getElementById('video-desc').value = '';
+            document.getElementById('video-url-input').value = '';
+            fileInput.value = '';
+        }
+
+        // Student Exam Starter
+        function startCbtExam() {
+            const subject = document.getElementById('std-exam-subject').value;
+            const studentClass = document.getElementById('std-exam-class').value;
+            
+            if(!subject) {
+                alert('Please select an examination subject.');
+                return;
+            }
+            alert(`Starting ${studentClass} CBT Exam for: ${subject}.\nTimer and question sheet loaded.`);
+        }
+
+        // CBT Question Generator
+        function generateQuestionFields() {
+            const termElem = document.getElementById('exam-term');
+            if(!termElem) return;
+            const term = termElem.value;
+            const container = document.getElementById('question-upload-area');
+            
+            const questionCount = (term === '3') ? 40 : 20; 
+            let html = `<h4>Uploading ${questionCount} Manual Objective Questions</h4><br>`;
+            
+            for(let i = 1; i <= questionCount; i++) {
+                html += `
+                <div class="question-block">
+                    <label>Question ${i}</label>
+                    <textarea rows="2" placeholder="Enter question here..."></textarea>
+                    
+                    <div class="options-grid">
+                        <input type="text" placeholder="Option A">
+                        <input type="text" placeholder="Option B">
+                        <input type="text" placeholder="Option C">
+                        <input type="text" placeholder="Option D">
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <label style="display:inline;">Correct Answer: </label>
+                        <select style="width: 100px; display:inline;">
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>D</option>
+                        </select>
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        initSuperAdmin();
+    </script>
+</body>
+</html>

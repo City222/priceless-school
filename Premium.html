@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challice Bar and Grill Restaurant | Premium Nigerian & Fine Dining</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#fcf6ba',
+                            300: '#f3e5ab',
+                            400: '#e2c044',
+                            500: '#d4af37',
+                            600: '#b89628',
+                            700: '#8c6d13',
+                        },
+                        dark: {
+                            900: '#0a0a0c',
+                            800: '#121216',
+                            700: '#1a1a22',
+                            600: '#262630'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styling & Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b89628;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fcf6ba 0%, #bf953f 25%, #fbf5b7 50%, #b38728 75%, #fbf5b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
+        }
+
+        .gold-gradient-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #b89628 100%);
+            transition: all 0.3s ease;
+        }
+        .gold-gradient-btn:hover {
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 22, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-6px);
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Pulsing WhatsApp Effect */
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-200 font-sans selection:bg-gold-500 selection:text-black">
+
+    <!-- Configurable WhatsApp Settings variable storage -->
+    <script>
+        const WHATSAPP_NUMBER = "2348000000000"; // Replace with actual Nigerian phone number
+        const RESTAURANT_NAME = "Challice Bar & Grill";
+    </script>
+
+    <!-- ================= TOP ANNOUNCEMENT BAR ================= -->
+    <div class="bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-xs py-2 px-4 text-center text-gray-300">
+        <span class="inline-flex items-center gap-2">
+            <i class="fa-solid fa-crown text-gold-500"></i>
+            <span class="hidden sm:inline">Experience Royal Fine Dining in Lagos & Abuja |</span> 
+            <span>Reserve Table or Order Online for Fast Delivery</span>
+            <button onclick="openBookingModal()" class="text-gold-400 underline hover:text-gold-300 font-semibold ml-2">Book From Home</button>
+        </span>
+    </div>
+
+    <!-- ================= STICKY NAVIGATION BAR ================= -->
+    <nav id="navbar" class="sticky top-0 z-40 bg-dark-900/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-full border border-gold-500/40 flex items-center justify-center bg-dark-800 group-hover:border-gold-500 transition-colors">
+                        <i class="fa-solid fa-utensils text-gold-500 text-xl group-hover:rotate-12 transition-transform"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif font-black text-xl sm:text-2xl tracking-wider gold-gradient-text block leading-none">CHALLICE</span>
+                        <span class="text-[9px] uppercase tracking-[0.25em] text-gray-400 block mt-1">Bar & Grill Restaurant</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide">
+                    <a href="#about" class="hover:text-gold-400 transition-colors">About Us</a>
+                    <a href="#specials" class="hover:text-gold-400 transition-colors">Chef's Specials</a>
+                    <a href="#menu" class="hover:text-gold-400 transition-colors">Our Menu</a>
+                    <a href="#why-us" class="hover:text-gold-400 transition-colors">Why Choose Us</a>
+                    <a href="#gallery" class="hover:text-gold-400 transition-colors">Gallery</a>
+                    <a href="#contact" class="hover:text-gold-400 transition-colors">Contact</a>
+                </div>
+
+                <!-- Action Buttons & Cart -->
+                <div class="hidden sm:flex items-center gap-4">
+                    <!-- Cart Button -->
+                    <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full bg-dark-800 border border-gold-500/30 hover:border-gold-500 text-gray-300 hover:text-gold-400 transition-all">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cart-count-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full gold-gradient-bg text-black text-[11px] font-bold flex items-center justify-center hidden">0</span>
+                    </button>
+
+                    <!-- Book From Home Button -->
+                    <button onclick="openBookingModal()" class="gold-gradient-btn px-5 py-2.5 rounded-lg text-black font-semibold text-sm tracking-wide shadow-md flex items-center gap-2">
+                        <i class="fa-regular fa-calendar-check text-black"></i>
+                        Book From Home
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <button onclick="toggleCartDrawer()" class="relative p-2 rounded-full bg-dark-800 border border-gold-500/30 text-gold-400">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span id="mobile-cart-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full gold-gradient-bg text-black text-[10px] font-bold flex items-center justify-center hidden">0</span>
+                    </button>
+                    <button id="menu-btn" onclick="toggleMobileMenu()" class="text-2xl text-gold-500 p-2 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-dark-800 border-b border-gold-500/20 px-6 py-6 space-y-4">
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">About Us</a>
+            <a href="#specials" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">Chef's Specials</a>
+            <a href="#menu" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">Our Menu</a>
+            <a href="#why-us" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">Why Choose Us</a>
+            <a href="#gallery" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">Gallery</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold-400 py-1 font-medium">Contact</a>
+            
+            <div class="pt-4 border-t border-gray-700/50 flex flex-col gap-3">
+                <button onclick="toggleMobileMenu(); openBookingModal();" class="w-full gold-gradient-btn py-3 rounded-lg text-black font-semibold text-center">
+                    <i class="fa-regular fa-calendar-check mr-2"></i> Book From Home
+                </button>
+                <a href="#menu" onclick="toggleMobileMenu()" class="w-full border border-gold-500/40 text-gold-400 py-3 rounded-lg font-semibold text-center hover:bg-gold-500/10 transition">
+                    <i class="fa-solid fa-bag-shopping mr-2"></i> Order From Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 bg-dark-900">
+        <!-- Background Image & Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80" alt="High End Dining Background" class="w-full h-full object-cover object-center opacity-30 scale-105 transform animate-pulse duration-[10000ms]">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-dark-900 via-transparent to-dark-900/90"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center">
+            <!-- Luxury Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dark-800/80 border border-gold-500/40 text-gold-400 text-xs sm:text-sm tracking-widest uppercase mb-6 backdrop-blur-md">
+                <i class="fa-solid fa-star text-xs"></i> Unrivaled Culinary Excellence <i class="fa-solid fa-star text-xs"></i>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                Taste the Difference. <br>
+                <span class="gold-gradient-text">Experience the Excellence.</span>
+            </h1>
+
+            <!-- Description -->
+            <p class="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                Indulge in royal Nigerian delicacies, masterfully grilled premium steaks, and exotically crafted cocktails served in an atmosphere of pure luxury.
+            </p>
+
+            <!-- Call To Actions -->
+            <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <!-- Book From Home -->
+                <button onclick="openBookingModal()" class="gold-gradient-btn px-8 py-4 rounded-xl text-black font-bold text-base tracking-wide shadow-xl flex items-center gap-3 group">
+                    <i class="fa-regular fa-calendar-check text-lg group-hover:scale-110 transition-transform"></i>
+                    Book From Home
+                </button>
+
+                <!-- View Our Menu -->
+                <a href="#menu" class="px-8 py-4 rounded-xl bg-dark-800/80 border border-gold-500/40 hover:border-gold-500 text-gold-300 font-semibold text-base backdrop-blur-md hover:bg-gold-500/10 transition flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-sm"></i>
+                    View Our Menu
+                </a>
+
+                <!-- Order Now Button -->
+                <a href="#menu" class="px-8 py-4 rounded-xl bg-white/5 border border-white/20 hover:bg-white/10 text-white font-semibold text-base transition flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-gold-400"></i>
+                    Order Now
+                </a>
+            </div>
+
+            <!-- Quick WhatsApp Link -->
+            <div class="mt-8">
+                <a href="https://wa.me/2348000000000?text=Hello%20Challice%20Bar%20%26%20Grill,%20I%20would%20like%20to%20make%20an%20inquiry." target="_blank" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                    Chat directly with our Concierge on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT US ================= -->
+    <section id="about" class="py-24 bg-dark-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Left: Luxury Image Stack -->
+                <div class="relative">
+                    <div class="relative rounded-2xl overflow-hidden border border-gold-500/20 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Challice Ambience" class="w-full h-[480px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-transparent to-transparent"></div>
+                    </div>
+                    <!-- Badge Overlay -->
+                    <div class="absolute -bottom-6 -right-6 hidden sm:flex items-center gap-4 bg-dark-900 border border-gold-500/40 p-5 rounded-2xl shadow-2xl backdrop-blur-md">
+                        <div class="w-14 h-14 rounded-full gold-gradient-bg flex items-center justify-center text-black font-bold text-2xl font-serif">
+                            10+
+                        </div>
+                        <div>
+                            <p class="text-white font-bold text-sm">Years of Culinary</p>
+                            <p class="text-gold-400 text-xs font-serif">Mastery & Distinction</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Content -->
+                <div>
+                    <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Our Heritage & Passion</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+                        Redefining Modern Nigerian Fine Dining
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light">
+                        At <strong class="text-white font-medium">Challice Bar and Grill Restaurant</strong>, culinary heritage meets opulent modern dining. We specialize in elevating rich Nigerian gastronomy alongside continental grill favorites—crafted to delight discerning palates.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed mb-8 text-sm">
+                        From farm-fresh organic ingredients to aged premium cuts grilled over hardwood embers, our master chefs infuse every dish with deep flavor, precision, and authentic Nigerian warmth.
+                    </p>
+
+                    <!-- Grid Specs -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-leaf text-gold-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">100% Organic</h4>
+                                <p class="text-gray-400 text-xs">Fresh local ingredients daily</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-user-tie text-gold-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">Master Chefs</h4>
+                                <p class="text-gray-400 text-xs">Award-winning culinary artists</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-crown text-gold-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">Royal Hospitality</h4>
+                                <p class="text-gray-400 text-xs">Tailored high-end service</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-fire text-gold-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-semibold text-sm">Signature BBQ</h4>
+                                <p class="text-gray-400 text-xs">Authentic smoky flavors</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="openBookingModal()" class="gold-gradient-btn px-6 py-3 rounded-lg text-black font-semibold text-sm">
+                        Experience Our Dining Room
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CHEF'S SPECIALS ================= -->
+    <section id="specials" class="py-24 bg-dark-900 border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Culinary Masterpieces</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Chef's Signature Creations</h2>
+                <p class="text-gray-400 font-light text-sm sm:text-base">Handpicked signature creations that define the essence of Challice luxury dining.</p>
+            </div>
+
+            <!-- Specials Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Special Item 1 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Royal Suya Platter" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full border border-gold-500/40">
+                                Signature
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-serif text-xl font-bold text-white">Royal Smoked Prime Suya</h3>
+                                <span class="text-gold-400 font-bold text-lg">₦22,500</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                                Tender beef tenderloin strips marinated in artisanal Yaji spice, smoked over sweet mahogany embers with caramelized onions and spicy cabbage slaw.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="addToCart('special-1', 'Royal Smoked Prime Suya', 22500, 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80')" class="w-full border border-gold-500/50 hover:bg-gold-500 text-gold-400 hover:text-black py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase transition-colors">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Special Item 2 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80" alt="Seafood Okro" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full border border-gold-500/40">
+                                Best Seller
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-serif text-xl font-bold text-white">Gourmet Seafood Okro Supreme</h3>
+                                <span class="text-gold-400 font-bold text-lg">₦28,000</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                                Fresh jumbo prawns, lobster tail, blue crab, and croaker fish infused in rich aromatic diced okro stew, served with smooth pounded yam or semovita.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="addToCart('special-2', 'Gourmet Seafood Okro Supreme', 28000, 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80')" class="w-full border border-gold-500/50 hover:bg-gold-500 text-gold-400 hover:text-black py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase transition-colors">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Special Item 3 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Flame Grilled Ribeye" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full border border-gold-500/40">
+                                Chef's Favorite
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-serif text-xl font-bold text-white">Challice Smoked Jollof & Ribeye</h3>
+                                <span class="text-gold-400 font-bold text-lg">₦34,500</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-4">
+                                Fire-roasted firewood Jollof Rice accompanied by a 300g charcoal-grilled Ribeye steak, fried sweet plantains, and truffled pepper jus.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="addToCart('special-3', 'Challice Smoked Jollof & Ribeye', 34500, 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80')" class="w-full border border-gold-500/50 hover:bg-gold-500 text-gold-400 hover:text-black py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase transition-colors">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= OUR INTERACTIVE MENU (ORDER FROM HOME) ================= -->
+    <section id="menu" class="py-24 bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Explore Deliciousness</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Our Culinary Menu</h2>
+                <p class="text-gray-400 text-sm">Order directly from your home for prompt luxury doorstep delivery.</p>
+            </div>
+
+            <!-- Search Bar & Filters -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+                <!-- Search Input -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="text" id="menu-search" oninput="filterMenu()" placeholder="Search dishes..." class="w-full bg-dark-900 border border-gold-500/20 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition">
+                </div>
+
+                <!-- Categories Scroll Area -->
+                <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar" id="category-buttons">
+                    <button onclick="setCategory('all')" class="cat-btn active px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-gold-500 text-black transition">All Dishes</button>
+                    <button onclick="setCategory('nigerian')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Nigerian Cuisine</button>
+                    <button onclick="setCategory('grills')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Grills & BBQ</button>
+                    <button onclick="setCategory('seafood')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Seafood</button>
+                    <button onclick="setCategory('rice')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Rice & Pasta</button>
+                    <button onclick="setCategory('soups')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Soups & Swallow</button>
+                    <button onclick="setCategory('desserts')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Desserts</button>
+                    <button onclick="setCategory('drinks')" class="cat-btn px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-dark-900 border border-gold-500/20 text-gray-300 hover:text-gold-400 transition">Drinks</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Menu Grid -->
+            <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JavaScript will dynamically populate food items here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE US ================= -->
+    <section id="why-us" class="py-24 bg-dark-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">The Challice Standard</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Why Dine With Us?</h2>
+                <p class="text-gray-400 font-light text-sm">We combine high-end elegance with fast modern convenience.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Fresh Ingredients</h3>
+                    <p class="text-gray-400 text-xs">Sourced daily from certified premium local organic farms.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-hat-chef"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Experienced Chefs</h3>
+                    <p class="text-gray-400 text-xs">Master culinary team trained in top international kitchens.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-pepper-hot"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Authentic Flavours</h3>
+                    <p class="text-gray-400 text-xs">Rich traditional recipes elevated with high-end finesse.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Fast Home Delivery</h3>
+                    <p class="text-gray-400 text-xs">Piping hot food delivered straight to your door step.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-[#d4af37] fa-gem"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Beautiful Ambience</h3>
+                    <p class="text-gray-400 text-xs">Luxurious dark aesthetics with plush seating and mood lighting.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">VIP Customer Service</h3>
+                    <p class="text-gray-400 text-xs">Dedicated concierge for all order inquiries and reservations.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Easy Online Booking</h3>
+                    <p class="text-gray-400 text-xs">Instant table reservation without visiting the restaurant.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-gold-500/10 text-center hover:border-gold-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl gold-gradient-bg flex items-center justify-center text-black mx-auto mb-4 text-xl">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3 class="text-white font-bold mb-2">Instant WhatsApp Care</h3>
+                    <p class="text-gray-400 text-xs">Seamless direct communication with our concierge.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section id="gallery" class="py-24 bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Visual Atmosphere</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Our Gallery</h2>
+                <p class="text-gray-400 font-light text-sm">Take a glimpse inside the world of Challice Bar and Grill.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Restaurant Interior" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Luxury Dining Room</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Bar Area" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Cocktail Lounge</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Gourmet Dish" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Master Cuisine</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=800&q=80" alt="Grill Chef" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Live Charcoal Grill</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" alt="Fine Wines" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Vintage Wine Cellar</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80" alt="Desserts" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-gold-400 font-serif text-lg font-bold">Artisanal Desserts</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CUSTOMER TESTIMONIALS ================= -->
+    <section class="py-24 bg-dark-900 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Guest Experiences</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">Words From Our Diners</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 rounded-2xl relative">
+                    <div class="flex text-gold-400 mb-4 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-light">
+                        "The Seafood Okro is hands down the best in town. The ambience at Challice is unmatched, dark, cozy, and super elite. Ordering online was so effortless!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="User" class="w-10 h-10 rounded-full object-cover border border-gold-500/40">
+                        <div>
+                            <h4 class="text-white text-sm font-bold">Chief Dr. Adeleke O.</h4>
+                            <span class="text-gray-500 text-xs">Victoria Island, Lagos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 rounded-2xl relative">
+                    <div class="flex text-gold-400 mb-4 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-light">
+                        "Booked a private dinner for my anniversary using the 'Book From Home' button. Everything from the table placement to the Suya platter was 10/10."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="User" class="w-10 h-10 rounded-full object-cover border border-gold-500/40">
+                        <div>
+                            <h4 class="text-white text-sm font-bold">Emeka Nwosu</h4>
+                            <span class="text-gray-500 text-xs">Maitama, Abuja</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 rounded-2xl relative">
+                    <div class="flex text-gold-400 mb-4 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-light">
+                        "Fast home delivery with hot food intact! The Ribeye Jollof is phenomenal. Challice Bar and Grill has raised the bar for high-end dining."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="User" class="w-10 h-10 rounded-full object-cover border border-gold-500/40">
+                        <div>
+                            <h4 class="text-white text-sm font-bold">Amina Bello</h4>
+                            <span class="text-gray-500 text-xs">Ikoyi, Lagos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= BOOK FROM HOME BANNER ================= -->
+    <section class="py-20 relative overflow-hidden bg-gradient-to-r from-dark-900 via-dark-800 to-dark-900 border-t border-b border-gold-500/30">
+        <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+            <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.25em] block mb-3">Reservations Made Simple</span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-6">Your Table Is Just a Click Away.</h2>
+            <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 font-light">
+                Planning a romantic dinner or executive meeting? Reserve your table from the comfort of your home and let us prepare an unforgettable dining experience for you.
+            </p>
+            <button onclick="openBookingModal()" class="gold-gradient-btn px-10 py-4 rounded-xl text-black font-bold text-lg shadow-2xl inline-flex items-center gap-3 transform hover:scale-105 transition-transform">
+                <i class="fa-regular fa-calendar-check text-xl"></i>
+                Book From Home Now
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= LOCATION & CONTACT ================= -->
+    <section id="contact" class="py-24 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Info Left -->
+                <div>
+                    <span class="text-gold-400 text-xs font-bold uppercase tracking-[0.2em] block mb-2">Get In Touch</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-8">Visit or Contact Us</h2>
+
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg gold-gradient-bg flex items-center justify-center text-black shrink-0 mt-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Location Address</h4>
+                                <p class="text-gray-400 text-xs mt-0.5">14 Ahmadu Bello Way, Victoria Island, Lagos, Nigeria</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg gold-gradient-bg flex items-center justify-center text-black shrink-0 mt-1">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Phone & Reservation Hotline</h4>
+                                <p class="text-gray-400 text-xs mt-0.5">+234 800 000 0000 | +234 900 000 0000</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg gold-gradient-bg flex items-center justify-center text-black shrink-0 mt-1">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Opening Hours</h4>
+                                <p class="text-gray-400 text-xs mt-0.5">Monday – Sunday: 11:00 AM – 11:30 PM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3">
+                        <a href="tel:+2348000000000" class="gold-gradient-btn px-5 py-2.5 rounded-lg text-black text-xs font-bold inline-flex items-center gap-2">
+                            <i class="fa-solid fa-phone"></i> Call Us
+                        </a>
+                        <a href="https://wa.me/2348000000000" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg text-xs font-bold inline-flex items-center gap-2 transition">
+                            <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                        </a>
+                        <button onclick="openBookingModal()" class="border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 px-5 py-2.5 rounded-lg text-xs font-bold">
+                            Book From Home
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Google Maps Embed Placeholder -->
+                <div class="rounded-2xl overflow-hidden border border-gold-500/20 h-96 relative">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.728876403206!2d3.4215!3d6.4281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjUnNDEuMiJOIDPCsDI1JTE3LjQiRQ!5e0!3m2!1sen!2sng!4v1620000000000!5m2!1sen!2sng" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-dark-900 border-t border-gold-500/20 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                
+                <!-- Col 1: Brand -->
+                <div class="space-y-4">
+                    <a href="#" class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full border border-gold-500 flex items-center justify-center bg-dark-800">
+                            <i class="fa-solid fa-utensils text-gold-500"></i>
+                        </div>
+                        <span class="font-serif font-bold text-xl gold-gradient-text">CHALLICE</span>
+                    </a>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Challice Bar and Grill Restaurant brings you an unparalleled blend of Nigerian authentic delicacies and world-class grilled perfection.
+                    </p>
+                    <div class="flex gap-3 text-gray-400">
+                        <a href="#" class="w-8 h-8 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center hover:text-gold-400 transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center hover:text-gold-400 transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center hover:text-gold-400 transition"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 font-serif">Quick Navigation</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#about" class="hover:text-gold-400 transition">About Our Kitchen</a></li>
+                        <li><a href="#specials" class="hover:text-gold-400 transition">Chef's Signature Specials</a></li>
+                        <li><a href="#menu" class="hover:text-gold-400 transition">Browse Menu</a></li>
+                        <li><a href="#gallery" class="hover:text-gold-400 transition">Interior Gallery</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Services -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 font-serif">Online Services</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="javascript:void(0)" onclick="openBookingModal()" class="hover:text-gold-400 transition">Book From Home</a></li>
+                        <li><a href="#menu" class="hover:text-gold-400 transition">Order From Home</a></li>
+                        <li><a href="javascript:void(0)" onclick="toggleCartDrawer()" class="hover:text-gold-400 transition">Shopping Cart</a></li>
+                        <li><a href="https://wa.me/2348000000000" class="hover:text-gold-400 transition">WhatsApp Catering Inquiry</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 font-serif">Royal VIP Club</h4>
+                    <p class="text-gray-400 text-xs mb-3">Subscribe to get exclusive secret menu invites and discounts.</p>
+                    <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to Challice VIP Club!');" class="space-y-2">
+                        <input type="email" placeholder="Enter your email" required class="w-full bg-dark-800 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                        <button type="submit" class="w-full gold-gradient-btn py-2 rounded-lg text-black text-xs font-bold uppercase tracking-wider">Subscribe</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/5 pt-6 text-center text-xs text-gray-500">
+                <p>&copy; 2026 CHALLICE BAR AND GRILL RESTAURANT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+    <div class="fixed bottom-6 right-6 z-40 group">
+        <!-- Tooltip -->
+        <span class="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-dark-800 border border-emerald-500/40 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-xl pointer-events-none">
+            Chat With Us <i class="fa-solid fa-headset text-emerald-400 ml-1"></i>
+        </span>
+        <a href="https://wa.me/2348000000000?text=Hello%20Challice%20Bar%20%26%20Grill,%20I%20would%20like%20to%20make%20a%20reservation/order." target="_blank" class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-2xl whatsapp-pulse hover:scale-110 transition-transform">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- ================= BOOK FROM HOME MODAL ================= -->
+    <div id="booking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-lg w-full rounded-2xl border border-gold-500/30 p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest block mb-1">Instant Reservation</span>
+                <h3 class="font-serif text-2xl font-bold text-white">Book From Home</h3>
+                <p class="text-gray-400 text-xs">Reserve your luxury dining experience in seconds.</p>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="book-name" required placeholder="e.g. Chief Olamide Adebayo" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Phone Number</label>
+                        <input type="tel" id="book-phone" required placeholder="08012345678" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">WhatsApp Number</label>
+                        <input type="tel" id="book-whatsapp" required placeholder="08012345678" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Guests</label>
+                        <select id="book-guests" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-2 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                            <option value="1 Person">1 Person</option>
+                            <option value="2 Guests" selected>2 Guests</option>
+                            <option value="3-4 Guests">3-4 Guests</option>
+                            <option value="5-8 Guests">5-8 Guests</option>
+                            <option value="VIP Private Section (9+)">VIP Private Section</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Date</label>
+                        <input type="date" id="book-date" required class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-2 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Preferred Time</label>
+                        <input type="time" id="book-time" required class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-2 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Seating Preference</label>
+                    <select id="book-seating" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500">
+                        <option value="Main Dining Room">Main Dining Room</option>
+                        <option value="VIP Outdoor Terrace">VIP Outdoor Terrace</option>
+                        <option value="Romantic Candlelight Booth">Romantic Candlelight Booth</option>
+                        <option value="Executive Private Room">Executive Private Lounge</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Special Request (Optional)</label>
+                    <textarea id="book-request" rows="2" placeholder="Birthday setup, anniversary, dietary requirements..." class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500"></textarea>
+                </div>
+
+                <button type="submit" class="w-full gold-gradient-btn py-3 rounded-xl text-black font-bold text-sm tracking-wide mt-2">
+                    Confirm Reservation
+                </button>
+            </form>
+
+            <!-- Success Confirmation Screen (Hidden by default) -->
+            <div id="booking-success" class="hidden text-center py-6">
+                <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-emerald-500/40">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-2 font-serif">Booking Request Received!</h4>
+                <p class="text-gray-300 text-xs mb-6">Your table reservation details have been captured. Click below to instantly notify our host on WhatsApp for immediate confirmation.</p>
+                <a id="send-whatsapp-booking-btn" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Send Details on WhatsApp
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= CART DRAWER & ORDER FROM HOME ================= -->
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-dark-900 border-l border-gold-500/30 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Drawer Header -->
+        <div class="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-gold-400 text-lg"></i>
+                <h3 class="font-serif font-bold text-lg text-white">Your Food Order</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+            <!-- Dynamic Cart Items Rendered Here -->
+        </div>
+
+        <!-- Drawer Footer / Checkout -->
+        <div class="p-4 sm:p-6 border-t border-white/10 bg-dark-800 space-y-4">
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-gray-400">Total Amount:</span>
+                <span id="cart-total-price" class="text-gold-400 font-bold text-xl font-serif">₦0</span>
+            </div>
+
+            <!-- Checkout Form Trigger -->
+            <button id="checkout-btn" onclick="showCheckoutSection()" class="w-full gold-gradient-btn py-3 rounded-xl text-black font-bold text-xs uppercase tracking-wider disabled:opacity-50" disabled>
+                Proceed to Checkout (Order From Home)
+            </button>
+
+            <!-- Embedded Quick Checkout Form (Hidden until clicked) -->
+            <form id="checkout-form" onsubmit="handleOrderSubmit(event)" class="hidden space-y-3 pt-2 border-t border-white/10">
+                <input type="text" id="order-name" required placeholder="Your Name" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white">
+                <input type="tel" id="order-phone" required placeholder="Phone / WhatsApp Number" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white">
+                
+                <select id="order-type" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white">
+                    <option value="Home Delivery">Doorstep Home Delivery</option>
+                    <option value="Restaurant Pickup">Self Pickup at Restaurant</option>
+                </select>
+
+                <textarea id="order-address" rows="2" required placeholder="Delivery Address in Lagos/Abuja" class="w-full bg-dark-900 border border-gold-500/20 rounded-lg px-3 py-2 text-xs text-white"></textarea>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Send Order via WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Menu Dataset
+        const menuItems = [
+            { id: 'm1', name: 'Smoked Ofada Delight', category: 'nigerian', price: 14500, desc: 'Aromatic unpolished rice served in fresh green pepper locust bean stew, assorted meats, and boiled egg.', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm2', name: 'Spicy Nkwobi Gourmet', category: 'nigerian', price: 16000, desc: 'Tender cow foot cooked in traditional palm oil potash sauce, garnished with Utazi leaves and onion rings.', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm3', name: 'Grilled Croaker Fish & Chips', category: 'grills', price: 18500, desc: 'Whole spicy peppered croaker fish grilled over embers, served with yam chips or fried plantain.', img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm4', name: 'Challice Asun Platter', category: 'grills', price: 15000, desc: 'Fiery slow-roasted goat meat tossed with scotch bonnets, bell peppers, and shallots.', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm5', name: 'Lobster & Prawns Seafood Pasta', category: 'seafood', price: 26000, desc: 'Tagliatelle pasta tossed in a rich garlic butter cream, succulent tiger prawns, and lobster chunks.', img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm6', name: 'Fisherman Soup Supreme', category: 'soups', price: 24000, desc: 'Traditional coastal broth packed with fresh sea crab, prawns, fish, and periwinkles.', img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm7', name: 'Challice Special Native Jollof', category: 'rice', price: 13500, desc: 'Palm oil infused rice rich in dry fish, ponmo, prawns, and scent leaf.', img: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm8', name: 'Royal Egusi Soup & Pounded Yam', category: 'soups', price: 16500, desc: 'Rich melon seed soup with stockfish, goat meat, and spinach, served with soft pounded yam.', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm9', name: 'Gold Dust Lava Chocolate Cake', category: 'desserts', price: 9500, desc: 'Warm oozing dark chocolate cake topped with edible 24k gold leaf and vanilla bean ice cream.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm10', name: 'Challice Signature Gold Cocktail', category: 'drinks', price: 8500, desc: 'Aged spiced rum, passionfruit juice, lime, and edible shimmering gold dust.', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm11', name: 'Creamy Cajun Chicken Fettuccine', category: 'rice', price: 17000, desc: 'Pan-seared Cajun chicken breast in parmesan cream sauce over fresh egg noodles.', img: 'https://images.unsplash.com/photo-1621996346565-e3def6164286?auto=format&fit=crop&w=600&q=80' },
+            { id: 'm12', name: 'Vintage Aged Wine Selection', category: 'drinks', price: 45000, desc: 'Premium French Cabernet Sauvignon imported directly for luxury palates.', img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80' }
+        ];
+
+        let cart = [];
+        let currentCategory = 'all';
+
+        // Initialize Menu Display
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+        });
+
+        // Filter Category
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-black');
+                btn.classList.add('bg-dark-900', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-dark-900', 'text-gray-300');
+            event.target.classList.add('bg-gold-500', 'text-black');
+            renderMenu();
+        }
+
+        // Search Filter
+        function filterMenu() {
+            renderMenu();
+        }
+
+        // Render Menu Cards
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            const searchVal = document.getElementById('menu-search').value.toLowerCase();
+
+            const filtered = menuItems.filter(item => {
+                const matchesCat = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">No delicious items match your search.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-gold-500/10 hover:border-gold-500/40 transition duration-300">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-white text-base">${item.name}</h4>
+                                <span class="text-gold-400 font-bold text-sm font-serif">₦${item.price.toLocaleString()}</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-4 font-light">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex gap-2">
+                        <button onclick="addToCart('${item.id}', '${item.name}', ${item.price}, '${item.img}')" class="flex-1 bg-gold-500/10 hover:bg-gold-500 border border-gold-500/30 text-gold-400 hover:text-black font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Drawer Logic
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('translate-x-full');
+        }
+
+        function addToCart(id, name, price, img) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            toggleCartDrawer();
+        }
+
+        function updateCartQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += change;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalBadge = document.getElementById('cart-count-badge');
+            const mobileBadge = document.getElementById('mobile-cart-badge');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            // Update Badges
+            if (totalItems > 0) {
+                totalBadge.textContent = totalItems;
+                totalBadge.classList.remove('hidden');
+                mobileBadge.textContent = totalItems;
+                mobileBadge.classList.remove('hidden');
+                checkoutBtn.disabled = false;
+            } else {
+                totalBadge.classList.add('hidden');
+                mobileBadge.classList.add('hidden');
+                checkoutBtn.disabled = true;
+            }
+
+            totalPriceEl.textContent = `₦${totalPrice.toLocaleString()}`;
+
+            // Render Items
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500 space-y-3">
+                        <i class="fa-solid fa-basket-shopping text-4xl"></i>
+                        <p class="text-xs">Your shopping cart is currently empty.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-3 bg-dark-800 p-3 rounded-xl border border-white/5">
+                    <img src="${item.img}" class="w-14 h-14 rounded-lg object-cover">
+                    <div class="flex-1">
+                        <h5 class="text-white text-xs font-bold">${item.name}</h5>
+                        <p class="text-gold-400 text-xs font-serif font-bold">₦${(item.price * item.qty).toLocaleString()}</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-dark-900 border border-gold-500/20 rounded-lg px-2 py-1">
+                        <button onclick="updateCartQty('${item.id}', -1)" class="text-gray-400 hover:text-white text-xs">-</button>
+                        <span class="text-white text-xs font-bold">${item.qty}</span>
+                        <button onclick="updateCartQty('${item.id}', 1)" class="text-gray-400 hover:text-white text-xs">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showCheckoutSection() {
+            document.getElementById('checkout-form').classList.remove('hidden');
+            document.getElementById('checkout-btn').classList.add('hidden');
+        }
+
+        // WhatsApp Order Dispatch
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const type = document.getElementById('order-type').value;
+            const address = document.getElementById('order-address').value;
+
+            let orderText = `*NEW ORDER - ${RESTAURANT_NAME}*\n\n`;
+            orderText += `*Customer:* ${name}\n`;
+            orderText += `*Phone:* ${phone}\n`;
+            orderText += `*Type:* ${type}\n`;
+            orderText += `*Address:* ${address}\n\n`;
+            orderText += `*ORDER SUMMARY:*\n`;
+
+            cart.forEach(item => {
+                orderText += `- ${item.name} x${item.qty} = ₦${(item.price * item.qty).toLocaleString()}\n`;
+            });
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            orderText += `\n*TOTAL AMOUNT:* ₦${total.toLocaleString()}`;
+
+            const encodedMsg = encodeURIComponent(orderText);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`, '_blank');
+        }
+
+        // Booking Modal Logic
+        function openBookingModal() {
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.getElementById('booking-form').classList.remove('hidden');
+            document.getElementById('booking-success').classList.add('hidden');
+        }
+
+        function handleBookingSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('book-name').value;
+            const phone = document.getElementById('book-phone').value;
+            const whatsapp = document.getElementById('book-whatsapp').value;
+            const guests = document.getElementById('book-guests').value;
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const seating = document.getElementById('book-seating').value;
+            const request = document.getElementById('book-request').value;
+
+            let bookingMsg = `*TABLE RESERVATION REQUEST*\n\n`;
+            bookingMsg += `*Name:* ${name}\n`;
+            bookingMsg += `*Phone:* ${phone}\n`;
+            bookingMsg += `*WhatsApp:* ${whatsapp}\n`;
+            bookingMsg += `*Guests:* ${guests}\n`;
+            bookingMsg += `*Date:* ${date}\n`;
+            bookingMsg += `*Time:* ${time}\n`;
+            bookingMsg += `*Seating:* ${seating}\n`;
+            if (request) bookingMsg += `*Special Request:* ${request}\n`;
+
+            const encoded = encodeURIComponent(bookingMsg);
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+            document.getElementById('send-whatsapp-booking-btn').href = waLink;
+            document.getElementById('booking-form').classList.add('hidden');
+            document.getElementById('booking-success').classList.remove('hidden');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+
+</body>
+</html>

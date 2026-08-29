@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenco Logistics | Premium Nigerian Freight & Parcel Courier</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbebe6',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #f59e0b;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen">
+
+  <!-- ================= TOAST NOTIFICATION BANNER ================= -->
+  <div id="toast" class="fixed top-24 right-6 z-50 hidden bg-amber-500 text-slate-950 font-bold px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-400 transition-all duration-300">
+    <i data-lucide="alert-circle" class="w-5 h-5"></i>
+    <span id="toast-message">Notification message here...</span>
+  </div>
+
+  <!-- ================= STICKY HEADER & NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+        <div class="bg-amber-500 p-2.5 rounded-xl text-slate-950 font-black">
+          <i data-lucide="truck" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-xl font-extrabold tracking-tight text-white block">ZENCO LOGISTICS</span>
+          <span class="text-[10px] text-amber-400 font-bold tracking-widest uppercase block">Express Freight NG</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+        <button onclick="switchTab('home')" class="nav-btn text-amber-400 font-bold border-b-2 border-amber-400 pb-1" data-tab="home">Home</button>
+        <button onclick="switchTab('services')" class="nav-btn text-slate-300 hover:text-white" data-tab="services">Services</button>
+        <button onclick="switchTab('track')" class="nav-btn text-slate-300 hover:text-white" data-tab="track">Track Package</button>
+        <button onclick="switchTab('calculator')" class="nav-btn text-slate-300 hover:text-white" data-tab="calculator">Rate Calculator</button>
+        <button onclick="switchTab('coverage')" class="nav-btn text-slate-300 hover:text-white" data-tab="coverage">Coverage</button>
+        <button onclick="switchTab('contact')" class="nav-btn text-slate-300 hover:text-white" data-tab="contact">Contact</button>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="hidden lg:flex items-center space-x-4">
+        <button onclick="switchTab('portal')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 flex items-center space-x-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Dashboards</span>
+        </button>
+        <button onclick="switchTab('book')" class="px-5 py-2.5 rounded-xl font-extrabold text-sm bg-amber-500 text-slate-950 hover:bg-amber-400 transition-transform active:scale-95 shadow-lg shadow-amber-500/20">
+          Book a Delivery
+        </button>
+      </div>
+
+      <!-- Mobile Menu Trigger -->
+      <button class="lg:hidden p-2 text-slate-300" onclick="toggleMobileMenu()">
+        <i data-lucide="menu" class="w-7 h-7"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-b border-slate-800 px-6 py-4 space-y-3">
+      <button onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Home</button>
+      <button onclick="switchTab('services'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Services</button>
+      <button onclick="switchTab('track'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Track Package</button>
+      <button onclick="switchTab('calculator'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Rate Calculator</button>
+      <button onclick="switchTab('book'); toggleMobileMenu()" class="block w-full text-left py-2 text-amber-400 font-bold">Book a Delivery</button>
+      <button onclick="switchTab('portal'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Dashboards</button>
+      <button onclick="switchTab('contact'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">Contact</button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN PAGE CONTENT WRAPPER ================= -->
+  <main class="flex-grow">
+
+    <!-- ================= 1. HOMEPAGE ================= -->
+    <section id="tab-home" class="tab-content active space-y-20 pb-16">
+      
+      <!-- Hero Section -->
+      <div class="relative pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Nigeria's premier commercial logistics provider</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+            Fast, Reliable & Secure <span class="text-amber-400">Logistics Solutions</span>
+          </h1>
+          <p class="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
+            Delivering your packages safely and on time, wherever you need them. Doorstep express dispatch across Lagos, Abuja, Port Harcourt, Owerri, and all 36 Nigerian states.
+          </p>
+
+          <!-- Search / Quick Track -->
+          <form onsubmit="handleHeroTrack(event)" class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex flex-col sm:flex-row gap-3 shadow-2xl max-w-xl">
+            <div class="flex-1 flex items-center px-3 bg-slate-950 rounded-xl border border-slate-800">
+              <i data-lucide="search" class="w-5 h-5 text-amber-400 mr-2"></i>
+              <input type="text" id="hero-track-input" placeholder="Enter Tracking No (e.g. SM-902841-NG)" class="w-full bg-transparent py-3 text-sm text-white focus:outline-none placeholder-slate-500" required />
+            </div>
+            <button type="submit" class="bg-amber-500 text-slate-950 font-black px-6 py-3 rounded-xl hover:bg-amber-400 transition-colors flex items-center justify-center space-x-2">
+              <span>Track Package</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <button onclick="switchTab('book')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg transition-transform active:scale-95">
+              Book Delivery Now
+            </button>
+            <button onclick="switchTab('calculator')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-800 flex items-center space-x-2">
+              <i data-lucide="calculator" class="w-4 h-4 text-amber-400"></i>
+              <span>Get Instant Price Quote</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero Visual Banner -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 p-4 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80" alt="Logistics Operations" class="w-full h-80 object-cover rounded-2xl" />
+            <div class="mt-4 bg-slate-950/90 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Operational Network</p>
+                <p class="font-bold text-white text-sm">36 State Terminals Active</p>
+              </div>
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                ● 99.4% On-Time Delivery
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Banner -->
+      <div class="bg-slate-900/60 border-y border-slate-800 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <p class="text-3xl sm:text-4xl font-black text-amber-400">10,000+</p>
+            <p class="text-[11px] uppercase tracking-widest text-slate-400 mt-1 font-semibold">Deliveries Completed</p>
+          </div>
+          <div>
+            <p class="text-3xl sm:text-4xl font-black text-amber-400">5,000+</p>
+            <p class="text-[11px] uppercase tracking-widest text-slate-400 mt-1 font-semibold">Happy Customers</p>
+          </div>
+          <div>
+            <p class="text-3xl sm:text-4xl font-black text-amber-400">36+</p>
+            <p class="text-[11px] uppercase tracking-widest text-slate-400 mt-1 font-semibold">State Coverage Hubs</p>
+          </div>
+          <div>
+            <p class="text-3xl sm:text-4xl font-black text-amber-400">99.4%</p>
+            <p class="text-[11px] uppercase tracking-widest text-slate-400 mt-1 font-semibold">Satisfaction Rate</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <p class="text-xs font-bold text-amber-400 uppercase tracking-widest">4 Simple Steps</p>
+          <h2 class="text-3xl font-black text-white mt-2">How Our Process Works</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <span class="text-3xl font-black text-amber-500/30 block mb-3">01</span>
+            <h3 class="text-lg font-bold text-white mb-2">Book Your Delivery</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Enter sender, receiver, and package details online in less than 60 seconds.</p>
+          </div>
+          <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <span class="text-3xl font-black text-amber-500/30 block mb-3">02</span>
+            <h3 class="text-lg font-bold text-white mb-2">We Pick Up Package</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Our dispatch rider or truck arrives at your doorstep for quick verification.</p>
+          </div>
+          <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <span class="text-3xl font-black text-amber-500/30 block mb-3">03</span>
+            <h3 class="text-lg font-bold text-white mb-2">Track Live Shipment</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Monitor real-time transit location and status updates right from your dashboard.</p>
+          </div>
+          <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <span class="text-3xl font-black text-amber-500/30 block mb-3">04</span>
+            <h3 class="text-lg font-bold text-white mb-2">Safe Delivery</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Direct handoff to recipient with instant digital Proof of Delivery signature.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. TRACK SHIPMENT ================= -->
+    <section id="tab-track" class="tab-content max-w-5xl mx-auto px-4 py-12">
+      <div class="bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-8">
+        <div>
+          <h2 class="text-2xl font-black text-white flex items-center space-x-3">
+            <i data-lucide="navigation" class="w-6 h-6 text-amber-400"></i>
+            <span>Live Shipment Tracker</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Check real-time status updates for your inter-state or doorstep delivery.</p>
+        </div>
+
+        <form onsubmit="executeTracking(event)" class="flex flex-col sm:flex-row gap-4">
+          <input type="text" id="track-search-code" placeholder="Enter Tracking Code (e.g., SM-902841-NG)" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-amber-400" required />
+          <button type="submit" class="bg-amber-500 text-slate-950 font-black px-8 py-3.5 rounded-xl hover:bg-amber-400 transition-colors">
+            Track Package
+          </button>
+        </form>
+
+        <!-- Tracking Results Dashboard -->
+        <div id="tracking-result-box" class="space-y-8 border-t border-slate-800 pt-8">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div>
+              <p class="text-[10px] text-slate-500 uppercase font-bold">Tracking Code</p>
+              <p id="res-code" class="text-sm font-black text-amber-400">SM-902841-NG</p>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-500 uppercase font-bold">Status</p>
+              <p id="res-status" class="text-sm font-bold text-emerald-400">In Transit</p>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-500 uppercase font-bold">Current Hub</p>
+              <p id="res-location" class="text-sm font-bold text-white">Ore Hub, Ondo State</p>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-500 uppercase font-bold">Est. Delivery</p>
+              <p id="res-est" class="text-sm font-bold text-white">Tomorrow, 2:00 PM</p>
+            </div>
+          </div>
+
+          <!-- Progress Stages -->
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Delivery Progress Stage</p>
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+              <div class="p-3 bg-slate-950 rounded-xl border border-emerald-500/40 text-center">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 mx-auto mb-1"></i>
+                <p class="text-xs font-bold text-white">1. Order Received</p>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-emerald-500/40 text-center">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 mx-auto mb-1"></i>
+                <p class="text-xs font-bold text-white">2. Picked Up</p>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-amber-500 text-center shadow-lg shadow-amber-500/10">
+                <i data-lucide="truck" class="w-5 h-5 text-amber-400 mx-auto mb-1"></i>
+                <p class="text-xs font-bold text-amber-400">3. In Transit</p>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center opacity-50">
+                <i data-lucide="clock" class="w-5 h-5 text-slate-500 mx-auto mb-1"></i>
+                <p class="text-xs font-bold text-slate-400">4. Out for Delivery</p>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center opacity-50">
+                <i data-lucide="package" class="w-5 h-5 text-slate-500 mx-auto mb-1"></i>
+                <p class="text-xs font-bold text-slate-400">5. Delivered</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Route Info -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-950/60 p-6 rounded-2xl border border-slate-800">
+            <div>
+              <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Sender Details</p>
+              <p id="res-sender" class="text-sm font-semibold text-white">Chidi Okonkwo (Lagos)</p>
+              <p class="text-xs text-slate-400 mt-1">Ikeja Industrial Hub, Lagos State</p>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Receiver Details</p>
+              <p id="res-receiver" class="text-sm font-semibold text-white">Amaka Bello (Owerri)</p>
+              <p class="text-xs text-slate-400 mt-1">Bank Road, Owerri, Imo State</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. SERVICES ================= -->
+    <section id="tab-services" class="tab-content max-w-7xl mx-auto px-4 py-12 space-y-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl font-black text-white">Our Logistics Services</h2>
+        <p class="text-xs text-slate-400 mt-2">Comprehensive transportation, haulage, and delivery solutions nationwide.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="bike" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Local Doorstep Delivery</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Same-day intra-city dispatch bikes and vans within Lagos, Abuja, Owerri, PH, and main commercial cities.</p>
+          <button onclick="switchTab('book')" class="text-xs font-bold text-amber-400 hover:underline">Book Local Delivery →</button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="truck" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Interstate Freight Transport</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Full-truckload (FTL) and less-than-truckload (LTL) scheduled highway cargo transit between all 36 states.</p>
+          <button onclick="switchTab('book')" class="text-xs font-bold text-amber-400 hover:underline">Book Freight →</button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">E-commerce Fulfillment</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Storage, inventory sync, Cash-on-Delivery (COD) reconciliation, and express last-mile order delivery.</p>
+          <button onclick="switchTab('contact')" class="text-xs font-bold text-amber-400 hover:underline">Partner With Us →</button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="plane" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">International Shipping</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Air and sea freight forwarding to over 180 countries with full customs clearance management.</p>
+          <button onclick="switchTab('contact')" class="text-xs font-bold text-amber-400 hover:underline">Get Overseas Quote →</button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="warehouse" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Warehousing & Storage</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Secure, 24/7 monitored distribution centers in Lagos, Abuja, Onitsha, and Port Harcourt.</p>
+          <button onclick="switchTab('contact')" class="text-xs font-bold text-amber-400 hover:underline">Reserve Space →</button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-colors space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="building-2" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Corporate Haulage</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Dedicated 10-ton to 30-ton commercial trucks for FMCG, manufacturing, and industrial transport.</p>
+          <button onclick="switchTab('contact')" class="text-xs font-bold text-amber-400 hover:underline">Request Fleet →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. RATE CALCULATOR ================= -->
+    <section id="tab-calculator" class="tab-content max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+        <div class="flex items-center space-x-3">
+          <i data-lucide="calculator" class="w-8 h-8 text-amber-400"></i>
+          <div>
+            <h2 class="text-2xl font-black text-white">Delivery Cost Estimator</h2>
+            <p class="text-xs text-slate-400">Calculate delivery fees across major Nigerian routes.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Pickup Location</label>
+            <select id="calc-origin" onchange="recalculateCost()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400">
+              <option value="Lagos">Lagos State</option>
+              <option value="Abuja">Abuja (FCT)</option>
+              <option value="Port Harcourt">Port Harcourt (Rivers)</option>
+              <option value="Owerri">Owerri (Imo)</option>
+              <option value="Onitsha">Onitsha (Anambra)</option>
+              <option value="Enugu">Enugu State</option>
+              <option value="Kano">Kano State</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Destination Location</label>
+            <select id="calc-dest" onchange="recalculateCost()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400">
+              <option value="Owerri">Owerri (Imo)</option>
+              <option value="Lagos">Lagos State</option>
+              <option value="Abuja">Abuja (FCT)</option>
+              <option value="Port Harcourt">Port Harcourt (Rivers)</option>
+              <option value="Onitsha">Onitsha (Anambra)</option>
+              <option value="Enugu">Enugu State</option>
+              <option value="Kano">Kano State</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-xs font-bold uppercase text-slate-400">Package Weight</label>
+              <span id="calc-weight-val" class="text-xs font-bold text-amber-400">5 KG</span>
+            </div>
+            <input type="range" id="calc-weight" min="1" max="100" value="5" oninput="recalculateCost()" class="w-full accent-amber-500" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Delivery Speed</label>
+            <select id="calc-speed" onchange="recalculateCost()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400">
+              <option value="1.0">Standard Inter-state (2-3 Days)</option>
+              <option value="1.5">Express Next-Day (24 Hours)</option>
+              <option value="2.2">Same-Day Priority Dispatch</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p class="text-[10px] text-slate-400 uppercase font-bold">Estimated Delivery Fee</p>
+            <p id="calc-result" class="text-3xl font-black text-amber-400">₦9,750</p>
+            <p class="text-[10px] text-slate-500 mt-1">*Includes standard transit insurance and local VAT.</p>
+          </div>
+          <button onclick="switchTab('book')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-8 py-3.5 rounded-xl transition-transform active:scale-95">
+            Proceed to Booking
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. BOOK A DELIVERY ================= -->
+    <section id="tab-book" class="tab-content max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-white">Book a Shipment Delivery</h2>
+          <p class="text-xs text-slate-400">Fill details below to schedule an immediate doorstep pickup.</p>
+        </div>
+
+        <form onsubmit="handleBookingSubmit(event)" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Sender Name</label>
+              <input type="text" placeholder="e.g., Segun Adebayo" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Sender Phone</label>
+              <input type="tel" placeholder="0803XXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Pickup Address & City</label>
+              <input type="text" placeholder="Ikeja Industrial Zone, Lagos" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Destination Address & City</label>
+              <input type="text" placeholder="Bank Road, Owerri, Imo State" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Receiver Name</label>
+              <input type="text" placeholder="Recipient Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Receiver Phone</label>
+              <input type="tel" placeholder="0802XXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+          </div>
+
+          <div class="border-t border-slate-800 pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Package Category</label>
+              <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white">
+                <option>Standard Parcel</option>
+                <option>Important Documents</option>
+                <option>Electronics / Gadgets</option>
+                <option>Fragile Items</option>
+                <option>Heavy Commercial Freight</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Approx Weight (KG)</label>
+              <input type="number" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Service Speed</label>
+              <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white">
+                <option>Standard Highway Transit</option>
+                <option>Express Next-Day Air/Road</option>
+                <option>Same-Day Priority Dispatch</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-amber-500 text-slate-950 font-black py-4 rounded-xl hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20">
+            Confirm & Generate Waybill Tracking
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= 6. COVERAGE AREAS ================= -->
+    <section id="tab-coverage" class="tab-content max-w-7xl mx-auto px-4 py-12 space-y-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl font-black text-white">Coverage & Distribution Network</h2>
+        <p class="text-xs text-slate-400 mt-2">Active hubs across major industrial and commercial centers in Nigeria.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i>
+          <p class="font-bold text-white text-base">Lagos</p>
+          <p class="text-[10px] text-slate-400 mt-1">Primary Hub Active</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i>
+          <p class="font-bold text-white text-base">Abuja</p>
+          <p class="text-[10px] text-slate-400 mt-1">FCT Sorting Hub</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i>
+          <p class="font-bold text-white text-base">Port Harcourt</p>
+          <p class="text-[10px] text-slate-400 mt-1">South-South Hub</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i>
+          <p class="font-bold text-white text-base">Owerri</p>
+          <p class="text-[10px] text-slate-400 mt-1">Imo Express Terminal</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-400 mx-auto mb-2"></i>
+          <p class="font-bold text-white text-base">Onitsha</p>
+          <p class="text-[10px] text-slate-400 mt-1">Commercial Hub</p>
+        </div>
+      </div>
+
+      <!-- Map Mockup -->
+      <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 text-center space-y-4">
+        <div class="h-64 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center relative overflow-hidden">
+          <p class="text-slate-500 text-sm font-semibold z-10">[ GPS Live Highway Monitoring & Dispatch Grid ]</p>
+          <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. PORTAL & DASHBOARDS ================= -->
+    <section id="tab-portal" class="tab-content max-w-7xl mx-auto px-4 py-10 space-y-8">
+      
+      <!-- Role Switcher -->
+      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] text-slate-400 uppercase font-bold block">Dashboard Live Switcher:</span>
+          <p id="portal-role-title" class="text-base font-black text-white">Customer Operations View</p>
+        </div>
+
+        <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+          <button onclick="switchRole('customer')" id="role-btn-customer" class="role-btn px-4 py-2 rounded-lg text-xs font-bold bg-amber-500 text-slate-950">Customer</button>
+          <button onclick="switchRole('driver')" id="role-btn-driver" class="role-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white">Driver Portal</button>
+          <button onclick="switchRole('admin')" id="role-btn-admin" class="role-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white">Admin Control</button>
+        </div>
+      </div>
+
+      <!-- Customer View -->
+      <div id="view-customer" class="role-view space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Active Shipments</p>
+            <p class="text-3xl font-black text-amber-400 mt-2">2 Items</p>
+          </div>
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Completed Deliveries</p>
+            <p class="text-3xl font-black text-emerald-400 mt-2">18 Delivered</p>
+          </div>
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Spent (2026)</p>
+            <p class="text-3xl font-black text-white mt-2">₦142,500</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6">
+          <h3 class="text-base font-bold text-white mb-4">My Delivery History</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-950 uppercase text-slate-400">
+                <tr>
+                  <th class="p-3">Tracking Code</th>
+                  <th className="p-3">Destination</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3">Fee</th>
+                  <th class="p-3">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800">
+                <tr>
+                  <td class="p-3 font-bold text-amber-400">SM-902841-NG</td>
+                  <td class="p-3">Bank Road, Owerri</td>
+                  <td class="p-3"><span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-[10px] font-bold">In Transit</span></td>
+                  <td class="p-3 font-bold">₦14,500</td>
+                  <td class="p-3"><button onclick="triggerToast('Downloading Tax Waybill PDF...')" class="text-amber-400 font-bold hover:underline">Waybill</button></td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-amber-400">SM-771120-NG</td>
+                  <td class="p-3">Ikeja, Lagos</td>
+                  <td class="p-3"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-[10px] font-bold">Delivered</span></td>
+                  <td class="p-3 font-bold">₦6,000</td>
+                  <td class="p-3"><button onclick="triggerToast('Downloading Tax Invoice PDF...')" class="text-amber-400 font-bold hover:underline">Invoice</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Driver View -->
+      <div id="view-driver" class="role-view space-y-6 hidden">
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-white">Assigned Dispatch Jobs</h3>
+            <p class="text-xs text-slate-400">Driver: Emeka Nwosu | Toyota HiAce Van (KJA-482-XX)</p>
+          </div>
+          <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">● Active Dispatch</span>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <span class="font-black text-amber-400">Waybill: SM-902841-NG</span>
+            <span class="text-xs font-bold px-2.5 py-1 bg-slate-950 text-white rounded">Status: In Transit</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <p class="text-slate-500 font-bold uppercase">Pickup Address</p>
+              <p class="text-white mt-1">Ikeja Hub, Lagos</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold uppercase">Destination Address</p>
+              <p class="text-white mt-1">Bank Road, Owerri</p>
+            </div>
+          </div>
+          <div class="flex gap-3 pt-2">
+            <button onclick="triggerToast('Status Updated: Package Out for Delivery')" class="bg-amber-500 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl">Update Status</button>
+            <button onclick="triggerToast('Proof of Delivery Uploaded!')" class="bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl border border-slate-700">Upload POD Signature</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin View -->
+      <div id="view-admin" class="role-view space-y-6 hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Total Revenue</p>
+            <p class="text-3xl font-black text-amber-400 mt-2">₦12,840,000</p>
+          </div>
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Total Orders</p>
+            <p class="text-3xl font-black text-white mt-2">1,240</p>
+          </div>
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Active Fleet Drivers</p>
+            <p class="text-3xl font-black text-emerald-400 mt-2">48 Drivers</p>
+          </div>
+          <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+            <p class="text-xs text-slate-400 font-semibold uppercase">Pending Pickups</p>
+            <p class="text-3xl font-black text-amber-500 mt-2">14 Orders</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 8. CONTACT PAGE ================= -->
+    <section id="tab-contact" class="tab-content max-w-5xl mx-auto px-4 py-12 space-y-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl font-black text-white">Contact Customer Care</h2>
+        <p class="text-xs text-slate-400 mt-2">Available 24/7 for shipping enquiries, driver dispatch, and commercial corporate accounts.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-6">
+          <h3 class="text-xl font-bold text-white">SwiftMove Logistics Head Office</h3>
+          <div class="space-y-4 text-xs text-slate-300">
+            <p class="flex items-center space-x-3">
+              <i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i>
+              <span>Commercial Avenue, Ikeja Industrial Zone, Lagos, Nigeria</span>
+            </p>
+            <p class="flex items-center space-x-3">
+              <i data-lucide="phone" class="w-5 h-5 text-amber-400"></i>
+              <span>Direct Line: +234 803 942 2251</span>
+            </p>
+            <p class="flex items-center space-x-3">
+              <i data-lucide="mail" class="w-5 h-5 text-amber-400"></i>
+              <span>Email: support@swiftmovelogistics.ng</span>
+            </p>
+            <p class="flex items-center space-x-3">
+              <i data-lucide="clock" class="w-5 h-5 text-amber-400"></i>
+              <span>24/7 Operations & Highway Dispatch Control</span>
+            </p>
+          </div>
+        </div>
+
+        <form onsubmit="handleContactSubmit(event)" class="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-4">
+          <h3 class="text-xl font-bold text-white">Send Us a Direct Message</h3>
+          <input type="text" placeholder="Your Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+          <input type="email" placeholder="Email Address" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required />
+          <textarea rows="4" placeholder="How can we assist with your logistics or shipment?" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white" required></textarea>
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3.5 rounded-xl transition-colors">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+  <a href="https://wa.me/2348039422251?text=Hello%20SwiftMove%20Logistics,%20I%20want%20to%20book%20a%20delivery." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-400 text-white font-bold p-4 rounded-full shadow-2xl flex items-center space-x-2 transition-transform hover:scale-105">
+    <i data-lucide="message-square" class="w-6 h-6"></i>
+    <span class="hidden sm:inline text-xs font-extrabold">Chat With Us</span>
+  </a>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 border-t border-slate-900 pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-xs text-slate-400">
+      <div>
+        <div class="flex items-center space-x-2 text-white font-black text-base mb-3">
+          <i data-lucide="truck" class="w-5 h-5 text-amber-400"></i>
+          <span>SwiftMove Logistics</span>
+        </div>
+        <p class="leading-relaxed text-slate-400">
+          Nigeria’s reliable logistics infrastructure for doorstep parcels, interstate freight transport, and e-commerce distribution.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Quick Navigation</h4>
+        <ul class="space-y-2">
+          <li><button onclick="switchTab('home')" class="hover:text-amber-400">Home</button></li>
+          <li><button onclick="switchTab('track')" class="hover:text-amber-400">Track Package</button></li>
+          <li><button onclick="switchTab('book')" class="hover:text-amber-400">Book Delivery</button></li>
+          <li><button onclick="switchTab('calculator')" class="hover:text-amber-400">Rate Estimator</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Major Hubs</h4>
+        <ul class="space-y-2">
+          <li>Lagos Hub (Ikeja & Victoria Island)</li>
+          <li>Abuja Central Depot (Utako)</li>
+          <li>Owerri Terminal (Bank Road)</li>
+          <li>Port Harcourt Logistics Hub</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Newsletter</h4>
+        <p class="mb-3">Get enterprise freight rates and logistics updates.</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="Email address" class="bg-slate-900 border border-slate-800 px-3 py-2 rounded-lg text-xs text-white w-full" />
+          <button onclick="triggerToast('Subscribed to newsletter.')" class="bg-amber-500 text-slate-950 font-bold px-3 py-2 rounded-lg">Join</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto border-t border-slate-900 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+      <p>© 2026 SwiftMove Logistics Nigeria Limited. All rights reserved.</p>
+      <div class="flex space-x-4 mt-3 sm:mt-0">
+        <span class="hover:underline cursor-pointer">Privacy Policy</span>
+        <span class="hover:underline cursor-pointer">Terms of Service</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Tab Navigation Logic
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      
+      // Show selected tab
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      // Update Nav buttons indicator
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.className = 'nav-btn text-amber-400 font-bold border-b-2 border-amber-400 pb-1';
+        } else {
+          btn.className = 'nav-btn text-slate-300 hover:text-white';
+        }
+      });
+
+      // Scroll to top smooth
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mobile Drawer Toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Toast Notification Banner Logic
+    function triggerToast(message) {
+      const toast = document.getElementById('toast');
+      const msgSpan = document.getElementById('toast-message');
+      msgSpan.textContent = message;
+      toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    // Tracking Lookup Logic
+    function executeTracking(e) {
+      if (e) e.preventDefault();
+      const codeInput = document.getElementById('track-search-code').value || 'SM-902841-NG';
+      
+      document.getElementById('res-code').textContent = codeInput.toUpperCase();
+      triggerToast('Fetching live status for ' + codeInput.toUpperCase() + '...');
+      switchTab('track');
+    }
+
+    function handleHeroTrack(e) {
+      e.preventDefault();
+      const heroVal = document.getElementById('hero-track-input').value;
+      document.getElementById('track-search-code').value = heroVal;
+      executeTracking(null);
+    }
+
+    // Dynamic Price Calculator Formula
+    function recalculateCost() {
+      const origin = document.getElementById('calc-origin').value;
+      const dest = document.getElementById('calc-dest').value;
+      const weight = parseInt(document.getElementById('calc-weight').value);
+      const speedMultiplier = parseFloat(document.getElementById('calc-speed').value);
+
+      document.getElementById('calc-weight-val').textContent = weight + ' KG';
+
+      let baseRate = (origin === dest) ? 2500 : 6000;
+      let weightCharge = weight * 750;
+      let total = Math.round((baseRate + weightCharge) * speedMultiplier);
+
+      document.getElementById('calc-result').textContent = '₦' + total.toLocaleString();
+    }
+
+    // Form Handlers
+    function handleBookingSubmit(e) {
+      e.preventDefault();
+      triggerToast('Shipment booked successfully! Tracking ID generated: SM-' + Math.floor(100000 + Math.random() * 900000) + '-NG');
+      setTimeout(() => switchTab('track'), 1500);
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      triggerToast('Your message has been sent to SwiftMove Customer Support!');
+      e.target.reset();
+    }
+
+    // Role Switcher inside Portal
+    function switchRole(role) {
+      document.querySelectorAll('.role-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('view-' + role).classList.remove('hidden');
+
+      // Update Header Title
+      const titles = {
+        customer: 'Customer Operations View',
+        driver: 'Assigned Driver Portal',
+        admin: 'Administrative Management Console'
+      };
+      document.getElementById('portal-role-title').textContent = titles[role];
+
+      // Update button styling
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.className = 'role-btn px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white';
+      });
+      document.getElementById('role-btn-' + role).className = 'role-btn px-4 py-2 rounded-lg text-xs font-bold bg-amber-500 text-slate-950';
+    }
+  </script>
+</body>
+</html>

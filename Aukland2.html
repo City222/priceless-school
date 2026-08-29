@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aukland International School | Owerri West</title>
+    <style>
+        :root {
+            --primary: #003366; /* Navy Blue */
+            --secondary: #DAA520; /* Gold */
+            --light: #f4f4f4;
+            --dark: #333;
+            --success: #28a745;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
+        
+        /* Header & Nav */
+        header { background: var(--primary); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        nav button { background: none; border: none; color: white; margin-left: 10px; cursor: pointer; font-size: 0.9rem; padding: 4px 8px; }
+        nav button:hover { color: var(--secondary); }
+
+        /* Hero */
+        .hero { background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('school-bg.jpg') center/cover; color: white; text-align: center; padding: 80px 20px; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 10px; color: var(--secondary); }
+        
+        /* Portals Container */
+        .portal-container { max-width: 800px; margin: 30px auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .portal-section { display: none; }
+        .portal-section.active { display: block; }
+
+        /* Forms & Buttons */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { background: var(--secondary); color: var(--primary); padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn:hover { background: #c5951c; }
+        .btn-secondary { background: var(--primary); color: white; }
+
+        /* Compact Student Portal */
+        #student-portal { max-width: 420px; margin: 0 auto; font-size: 0.9rem; }
+        #student-portal h2 { font-size: 1.3rem; margin-bottom: 5px; }
+
+        /* CBT Exam Interface */
+        .cbt-header { display: flex; justify-content: space-between; align-items: center; background: var(--primary); color: white; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; }
+        .cbt-timer { background: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 1rem; }
+        .cbt-option { display: block; background: var(--light); padding: 10px; border-radius: 4px; margin-bottom: 8px; cursor: pointer; border: 1px solid #ddd; }
+        .cbt-option:hover { background: #e9ecef; }
+        .cbt-option input { width: auto; margin-right: 10px; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+
+        /* Result Card */
+        .result-card { text-align: center; padding: 30px; background: #e8f5e9; border: 2px solid var(--success); border-radius: 8px; }
+        .result-card h3 { color: var(--success); font-size: 1.8rem; margin-bottom: 10px; }
+        .print-header { display: none; }
+
+        /* Testimonials */
+        .testimonials { max-width: 800px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .testimonial-card { background: white; padding: 20px; border-radius: 8px; border-top: 4px solid var(--secondary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        footer { background: var(--primary); color: white; text-align: center; padding: 20px; margin-top: 40px; }
+
+        /* Print Styling - Automatically prepares result card for paper/PDF */
+        @media print {
+            header, footer, nav, .hero, .testimonials, .no-print, #portals > div:not(#result-screen) { display: none !important; }
+            body { background: white; color: black; }
+            .portal-container { box-shadow: none; margin: 0; padding: 0; max-width: 100%; }
+            .result-card { border: 2px solid var(--primary); background: white; padding: 40px; }
+            .print-header { display: block; text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
+            .print-header h2 { color: #003366; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="logo.png" alt="Aukland Logo" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+            <div>
+                <h2>AUKLAND INTERNATIONAL SCHOOL</h2>
+                <small>Owerri West, Imo State</small>
+            </div>
+        </div>
+        <nav>
+            <button onclick="switchPortal('home')">Home</button>
+            <button onclick="switchPortal('student')">Student</button>
+            <button onclick="switchPortal('admin')">Admin</button>
+            <button onclick="switchPortal('parent')">Parents</button>
+            <button onclick="switchPortal('admission')">Admissions</button>
+        </nav>
+    </header>
+
+    <div id="main-content">
+        
+        <!-- Home View -->
+        <div id="home" class="portal-section active">
+            <section class="hero">
+                <h1>Excellence in Education</h1>
+                <p>Empowering the next generation of leaders in Owerri West through innovation and academic rigor.</p>
+            </section>
+
+            <section style="text-align: center; margin-top: 30px;">
+                <h2>What Our Community Says</h2>
+            </section>
+            
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <p>"The dedicated teachers and the online portal have made tracking my child's progress seamless."</p>
+                    <br><strong>- Mrs. Okafor (Parent)</strong>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The CBT platform prepared us thoroughly for national entrance exams."</p>
+                    <br><strong>- Chidi M. (Student)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Portals Wrapper -->
+        <div class="portal-container" id="portals" style="display:none;">
+            
+            <!-- Student Portal Entry -->
+            <div id="student-portal" class="portal-section">
+                <h2>Student Portal: CBT Portal</h2>
+                <p>Select your class and examination term to begin (Time Limit: 30 Minutes).</p>
+                <br>
+                <div class="form-group">
+                    <label>Student Name / Registration No.</label>
+                    <input type="text" id="student-id" placeholder="e.g. AIS/2026/042">
+                </div>
+                <div class="form-group">
+                    <label>Class Level</label>
+                    <select id="student-class">
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>JSS 3</option>
+                        <option>SS 1</option>
+                        <option>SS 2</option>
+                        <option>SS 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Exam Term</label>
+                    <select id="selected-term">
+                        <option value="1">Mathematics - 1st Term (20 Questions)</option>
+                        <option value="2">Mathematics - 2nd Term (20 Questions)</option>
+                        <option value="3">Mathematics - 3rd Term (40 Questions)</option>
+                    </select>
+                </div>
+                <button class="btn" style="width: 100%;" onclick="startCBTExam()">Start Examination</button>
+            </div>
+
+            <!-- CBT Active Exam Area -->
+            <div id="cbt-screen" class="portal-section">
+                <div class="cbt-header">
+                    <div><strong>Subject:</strong> General Mathematics</div>
+                    <div class="cbt-timer" id="timer">Time Remaining: 30:00</div>
+                </div>
+
+                <div id="q-container">
+                    <!-- Dynamic Question content goes here -->
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevQuestion()" id="btn-prev">Previous</button>
+                    <button class="btn btn-secondary" onclick="nextQuestion()" id="btn-next">Next</button>
+                    <button class="btn" onclick="submitExam()" style="background:#28a745; color:white;">Submit Exam</button>
+                </div>
+            </div>
+
+            <!-- Result Score Card with Print Option -->
+            <div id="result-screen" class="portal-section">
+                <div class="result-card">
+                    <!-- Official School Header for Printout -->
+                    <div class="print-header">
+                        <h2>AUKLAND INTERNATIONAL SCHOOL</h2>
+                        <p>Owerri West, Imo State, Nigeria</p>
+                        <small>Official Computer Based Test (CBT) Assessment Report</small>
+                    </div>
+
+                    <h3>Examination Completed!</h3>
+                    <p id="student-greeting">Great effort!</p>
+                    <p id="print-date" style="font-size:0.85rem; color:#666; margin-top:5px;"></p>
+                    <hr style="margin: 15px 0;">
+                    <h2 id="final-score" style="font-size: 2.5rem; color: #003366;">0 / 0</h2>
+                    <p id="final-percentage" style="font-weight: bold; margin-top: 5px;">0%</p>
+                    <br>
+                    <!-- Action Buttons (Hidden when printing) -->
+                    <div class="no-print" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn" onclick="printResult()" style="background:#28a745; color:white;">🖨️ Print Result / Save PDF</button>
+                        <button class="btn btn-secondary" onclick="switchPortal('student')">Back to Student Portal</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Portal -->
+            <div id="admin-portal" class="portal-section">
+                <h2>Admin Portal: Upload Examination</h2>
+                <div class="form-group">
+                    <label>Select Academic Term</label>
+                    <select id="exam-term" onchange="generateQuestionFields()">
+                        <option value="1">First Term (20 Objectives)</option>
+                        <option value="2">Second Term (20 Objectives)</option>
+                        <option value="3">Third Term (40 Objectives)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subject Title</label>
+                    <input type="text" placeholder="e.g., General Mathematics">
+                </div>
+                
+                <div id="question-upload-area"></div>
+                <button class="btn" style="margin-top: 15px;">Publish Exam</button>
+            </div>
+
+            <!-- Parent Portal -->
+            <div id="parent-portal" class="portal-section">
+                <h2>Parent Portal</h2>
+                <div class="form-group">
+                    <label>Student Admission Number</label>
+                    <input type="text" placeholder="e.g., AIS/2026/001">
+                </div>
+                <div class="form-group">
+                    <label>Portal PIN</label>
+                    <input type="password" placeholder="Enter PIN">
+                </div>
+                <button class="btn">View Child's Result</button>
+            </div>
+
+            <!-- Admission Portal -->
+            <div id="admission-portal" class="portal-section">
+                <h2>Admission Application</h2>
+                <div class="form-group">
+                    <label>Applicant Full Name</label>
+                    <input type="text" placeholder="First Name, Last Name">
+                </div>
+                <div class="form-group">
+                    <label>Class Seeking Admission Into</label>
+                    <select>
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>SS 1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Upload Previous Result (PDF)</label>
+                    <input type="file" accept=".pdf">
+                </div>
+                <button class="btn">Submit Application</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Aukland International School. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let cbtQuestions = [];
+        let currentQuestionIdx = 0;
+        let userAnswers = {};
+        let timerInterval = null;
+        let timeRemaining = 1800; // 30 minutes in seconds
+
+        function switchPortal(target) {
+            document.querySelectorAll('.portal-section').forEach(el => el.classList.remove('active'));
+            
+            if(target === 'home') {
+                document.getElementById('home').classList.add('active');
+                document.getElementById('portals').style.display = 'none';
+            } else {
+                document.getElementById('home').classList.remove('active');
+                document.getElementById('portals').style.display = 'block';
+                document.getElementById(target + '-portal').classList.add('active');
+                
+                if(target === 'admin') {
+                    generateQuestionFields();
+                }
+            }
+        }
+
+        function buildQuestions(count) {
+            cbtQuestions = [];
+            for (let i = 1; i <= count; i++) {
+                cbtQuestions.push({
+                    id: i,
+                    question: `Question ${i}: What is the value of (${i} x 2) + 5?`,
+                    options: {
+                        A: `${(i * 2) + 2}`,
+                        B: `${(i * 2) + 5}`, // Correct answer
+                        C: `${(i * 2) + 10}`,
+                        D: `${(i * 2) + 1}`
+                    },
+                    correct: 'B'
+                });
+            }
+        }
+
+        function startCBTExam() {
+            const term = document.getElementById('selected-term').value;
+            const qCount = (term === '3') ? 40 : 20; 
+            
+            buildQuestions(qCount);
+            currentQuestionIdx = 0;
+            userAnswers = {};
+            timeRemaining = 1800; // 30 mins
+
+            document.querySelectorAll('.portal-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('cbt-screen').classList.add('active');
+
+            startTimer();
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = cbtQuestions[currentQuestionIdx];
+            const container = document.getElementById('q-container');
+            
+            let selected = userAnswers[q.id] || '';
+
+            let html = `
+                <h3>Question ${currentQuestionIdx + 1} of ${cbtQuestions.length}</h3>
+                <p style="margin: 15px 0; font-size: 1.1rem;">${q.question}</p>
+            `;
+
+            for (let key in q.options) {
+                const checked = selected === key ? 'checked' : '';
+                html += `
+                    <label class="cbt-option">
+                        <input type="radio" name="option" value="${key}" ${checked} onclick="saveAnswer(${q.id}, '${key}')">
+                        <strong>${key}.</strong> ${q.options[key]}
+                    </label>
+                `;
+            }
+
+            container.innerHTML = html;
+
+            document.getElementById('btn-prev').style.visibility = currentQuestionIdx === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next').style.visibility = currentQuestionIdx === cbtQuestions.length - 1 ? 'hidden' : 'visible';
+        }
+
+        function saveAnswer(qId, selectedOption) {
+            userAnswers[qId] = selectedOption;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < cbtQuestions.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            
+            let initialMins = Math.floor(timeRemaining / 60);
+            let initialSecs = timeRemaining % 60;
+            document.getElementById('timer').innerText = `Time Remaining: ${initialMins}:${initialSecs < 10 ? '0' : ''}${initialSecs}`;
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let mins = Math.floor(timeRemaining / 60);
+                let secs = timeRemaining % 60;
+                document.getElementById('timer').innerText = `Time Remaining: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Your exam is being submitted automatically.");
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            let score = 0;
+
+            cbtQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.correct) {
+                    score++;
+                }
+            });
+
+            const total = cbtQuestions.length;
+            const percentage = Math.round((score / total) * 100);
+            const studentId = document.getElementById('student-id').value || "Student";
+            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            document.querySelectorAll('.portal-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('result-screen').classList.add('active');
+
+            document.getElementById('student-greeting').innerText = `Official Result for: ${studentId}`;
+            document.getElementById('print-date').innerText = `Date Taken: ${today}`;
+            document.getElementById('final-score').innerText = `${score} / ${total}`;
+            document.getElementById('final-percentage').innerText = `Overall Score: ${percentage}%`;
+        }
+
+        // Print Result Functionality
+        function printResult() {
+            window.print();
+        }
+
+        function generateQuestionFields() {
+            const term = document.getElementById('exam-term').value;
+            const container = document.getElementById('question-upload-area');
+            const questionCount = (term === '3') ? 40 : 20; 
+            
+            let html = `<h4 style="margin: 10px 0;">Uploading ${questionCount} Questions</h4>`;
+            
+            for(let i = 1; i <= questionCount; i++) {
+                html += `
+                <div style="background:#f4f4f4; padding:10px; margin-bottom:10px; border-left:3px solid #003366;">
+                    <label>Question ${i}</label>
+                    <textarea rows="2" placeholder="Enter question text..."></textarea>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
+                        <input type="text" placeholder="Option A">
+                        <input type="text" placeholder="Option B">
+                        <input type="text" placeholder="Option C">
+                        <input type="text" placeholder="Option D">
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

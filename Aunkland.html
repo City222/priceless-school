@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRICELESS INTERNATIONAL COMPUTER BASED SCHOOL | OWERRI NORTH, IMO STATE</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #003366; /* Navy Blue */
+            --secondary: #DAA520; /* Gold */
+            --light: #f4f4f4;
+            --dark: #333;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
+        
+        /* Header & Navigation */
+        header { background: var(--primary); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-placeholder { width: 50px; height: 50px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); }
+        nav { display: flex; flex-wrap: wrap; gap: 5px; }
+        nav button { background: none; border: none; color: white; margin-left: 10px; cursor: pointer; font-size: 1rem; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
+        nav button:hover { color: var(--secondary); background: rgba(255,255,255,0.1); }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('images/priceless.png') center/cover; color: white; text-align: center; padding: 100px 20px; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--secondary); }
+        
+        /* History & Owner Section */
+        .history-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .history-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .history-card h2 { color: var(--primary); border-bottom: 3px solid var(--secondary); padding-bottom: 8px; margin-bottom: 15px; }
+        
+        .owner-profile { display: flex; flex-wrap: wrap; gap: 30px; align-items: center; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .owner-img-wrapper { flex: 0 0 250px; text-align: center; }
+        .owner-img { width: 220px; height: 260px; object-fit: cover; border-radius: 8px; border: 4px solid var(--secondary); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .owner-details { flex: 1; min-width: 280px; }
+        .owner-details h3 { color: var(--primary); font-size: 1.6rem; margin-bottom: 5px; }
+        .owner-details .subtitle { color: var(--secondary); font-weight: bold; display: block; margin-bottom: 15px; }
+
+        /* Gallery Section */
+        .gallery-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .gallery-container h2 { color: var(--primary); text-align: center; margin-bottom: 10px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 25px; }
+        .gallery-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.08); transition: transform 0.3s ease; }
+        .gallery-card:hover { transform: translateY(-5px); }
+        .gallery-card img { width: 100%; height: 200px; object-fit: cover; }
+        .gallery-caption { padding: 15px; text-align: center; font-weight: bold; color: var(--primary); background: white; border-top: 2px solid var(--light); }
+
+        /* Portals Container */
+        .portal-container { max-width: 750px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .portal-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--light); padding-bottom: 10px; flex-wrap: wrap; }
+        .portal-nav button { padding: 10px 20px; border: none; background: var(--light); cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .portal-nav button.active { background: var(--primary); color: white; }
+        .portal-section { display: none; }
+        .portal-section.active { display: block; }
+
+        /* Forms & Inputs */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { background: var(--secondary); color: var(--primary); padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn:hover { background: #c5951c; }
+
+        /* Exam Generation UI */
+        .question-block { background: var(--light); padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+
+        /* Testimonials */
+        .testimonials { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .testimonial-card { background: white; padding: 20px; border-radius: 8px; border-top: 4px solid var(--secondary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        /* Footer */
+        footer { background: var(--primary); color: white; text-align: center; padding: 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="images/logo AA.png" alt="Aukland Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50?text=LOGO'">
+            <div>
+                <h2>PRICELESS CHILD INT'L STANDARD & COMPUTER BASED SCHOOL</h2>
+                <small>SIR HENRY AKUJIOBI STREET, AKWAKUMA, OWERRI NORTH, IMO STATE</small>
+            </div>
+        </div>
+        <nav>
+            <button onclick="switchPortal('home')">Home</button>
+            <button onclick="switchPortal('history')">History & Owner</button>
+            <button onclick="switchPortal('gallery')">Gallery</button>
+            <button onclick="switchPortal('student')">Student</button>
+            <button onclick="switchPortal('admin')">Admin</button>
+            <button onclick="switchPortal('parent')">Parents</button>
+            <button onclick="switchPortal('admission')">Admissions</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        
+        <!-- Home / Welcome View -->
+        <div id="home" class="portal-section active">
+            <section class="hero">
+                <h1>Excellence in Education</h1>
+                <p>At our school, we are committed to providing excellence in education through innovative teaching.</p>
+            </section>
+
+            <section style="text-align: center; margin-top: 40px;">
+                <h2>What Our Community Says</h2>
+            </section>
+            
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <p>"The dedicated teachers and the new online portal have made tracking my child's progress in JSS3 incredibly easy."</p>
+                    <br><strong>- Mrs. Nzenwa (Parent)</strong>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Moving to SS1 was a big step, but Priceless Computer Based School prepared me perfectly. The CBT exams are exactly what we need."</p>
+                    <br><strong>- Jonathan Lasbrey (Student)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- History & Owner View -->
+        <div id="history" class="portal-section">
+            <div class="history-container">
+                <div class="history-card">
+                    <h2>Our History & Vision</h2>
+                    <p>Established in Akwakuma, Owerri North, Imo State, <strong>Priceless Child International Standard & Computer Based School</strong> was founded with a passion for integrating modern digital literacy with core academic standards. What began as a vision to revolutionize primary and secondary education in Imo State has grown into a premier institution pioneering Computer Based Testing (CBT), interactive ICT learning, and comprehensive academic development.</p>
+                    <br>
+                    <p>Our curriculum blends state educational guidelines with modern technology, ensuring every student develops strong digital competency alongside academic excellence, moral discipline, and leadership values.</p>
+                </div>
+
+                <div class="owner-profile">
+                    <div class="owner-img-wrapper">
+                        <img src="images/owner.jpg" alt="School Owner / Proprietor" class="owner-img" onerror="this.src='https://via.placeholder.com/220x260?text=Proprietor+Photo'">
+                    </div>
+                    <div class="owner-details">
+                        <h3>School Proprietor & Founder</h3>
+                        <span class="subtitle">Priceless Child International Standard School</span>
+                        <p><em>"Our vision is to build a modern learning standard where technology meets academic integrity. Every child is priceless, and with the right digital skills and academic foundation, their potential is limitless."</em></p>
+                        <br>
+                        <p><strong>Address:</strong> Sir Henry Akujiobi Street, Akwakuma, Owerri North, Imo State.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery View -->
+        <div id="gallery" class="portal-section">
+            <div class="gallery-container">
+                <h2>School Photo Gallery</h2>
+                <p style="text-align: center; color: #666;">Explore campus activities, modern facilities, and student life at Priceless Child Int'l School.</p>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-card">
+                        <img src="images/gallery-cbt.jpg" alt="CBT Computer Laboratory" onerror="this.src='https://via.placeholder.com/400x250?text=CBT+Computer+Lab'">
+                        <div class="gallery-caption">State-of-the-Art CBT Laboratory</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/gallery-classroom.jpg" alt="Interactive Classroom Session" onerror="this.src='https://via.placeholder.com/400x250?text=Interactive+Classroom'">
+                        <div class="gallery-caption">Modern Interactive Classrooms</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/gallery-science.jpg" alt="Science Laboratory Practical" onerror="this.src='https://via.placeholder.com/400x250?text=Science+Laboratory'">
+                        <div class="gallery-caption">Science Practical Laboratory</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/gallery-sports.jpg" alt="Annual Sports Day Events" onerror="this.src='https://via.placeholder.com/400x250?text=Sports+and+Recreation'">
+                        <div class="gallery-caption">Annual Sports & Physical Education</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/gallery-cultural.jpg" alt="Cultural Day Celebration" onerror="this.src='https://via.placeholder.com/400x250?text=Cultural+Day+Exhibition'">
+                        <div class="gallery-caption">Cultural Day & Creative Arts</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/gallery-library.jpg" alt="School Library & Study Hub" onerror="this.src='https://via.placeholder.com/400x250?text=Library+and+Resource+Center'">
+                        <div class="gallery-caption">Library & Digital Learning Resource</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portals Container -->
+        <div class="portal-container" id="portals" style="display:none;">
+            
+            <div class="portal-nav" id="portal-nav-buttons">
+                <!-- Buttons injected via JS based on selection -->
+            </div>
+
+            <!-- Student Portal -->
+            <div id="student-portal" class="portal-section">
+                <h2>Student Portal: Online Exam</h2>
+                <p>Welcome. Please select your class and subject to begin your CBT.</p>
+                <div class="form-group">
+                    <label>Class Level</label>
+                    <select>
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>JSS 3</option>
+                        <option>SS 1</option>
+                        <option>SS 2</option>
+                        <option>SS 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Exam</label>
+                    <select>
+                        <option>Mathematics - 1st Term (20 Questions)</option>
+                        <option>English - 3rd Term (40 Questions)</option>
+                    </select>
+                </div>
+                <button class="btn">Start Examination</button>
+            </div>
+
+            <!-- Admin Portal -->
+            <div id="admin-portal" class="portal-section">
+                <h2>Admin Portal: Upload Examination</h2>
+                <div class="form-group">
+                    <label>Select Academic Term</label>
+                    <select id="exam-term" onchange="generateQuestionFields()">
+                        <option value="1">First Term (20 Objectives)</option>
+                        <option value="2">Second Term (20 Objectives)</option>
+                        <option value="3">Third Term (40 Objectives)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" placeholder="e.g., General Mathematics">
+                </div>
+                
+                <div id="question-upload-area">
+                    <!-- Dynamic fields will appear here -->
+                </div>
+                <button class="btn" style="margin-top: 15px;">Publish Exam to Database</button>
+            </div>
+
+            <!-- Parent Portal -->
+            <div id="parent-portal" class="portal-section">
+                <h2>Parent Portal</h2>
+                <div class="form-group">
+                    <label>Student Admission Number</label>
+                    <input type="text" placeholder="e.g., AIS/2026/001">
+                </div>
+                <div class="form-group">
+                    <label>Portal PIN</label>
+                    <input type="password" placeholder="Enter PIN">
+                </div>
+                <button class="btn">View Child's Result</button>
+            </div>
+
+            <!-- Admission Portal -->
+            <div id="admission-portal" class="portal-section">
+                <h2>Admission Application</h2>
+                <div class="form-group">
+                    <label>Applicant Full Name</label>
+                    <input type="text" placeholder="First Name, Last Name">
+                </div>
+                <div class="form-group">
+                    <label>Class Seeking Admission Into</label>
+                    <select>
+                        <option>JSS 1</option>
+                        <option>JSS 2</option>
+                        <option>SS 1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Upload Previous Result (PDF)</label>
+                    <input type="file" accept=".pdf">
+                </div>
+                <button class="btn">Submit Application</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PRICELESS COMPUTER BASED SCHOOL. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Logic to switch between main views
+        function switchPortal(target) {
+            // Hide all sections first
+            document.querySelectorAll('.portal-section').forEach(el => el.classList.remove('active'));
+            
+            const mainViews = ['home', 'history', 'gallery'];
+
+            if(mainViews.includes(target)) {
+                document.getElementById('portals').style.display = 'none';
+                document.getElementById(target).classList.add('active');
+            } else {
+                document.getElementById('home').classList.remove('active');
+                document.getElementById('portals').style.display = 'block';
+                
+                // Show specific portal inside portal container
+                document.getElementById(target + '-portal').classList.add('active');
+                
+                // Trigger question generation if admin is selected
+                if(target === 'admin') {
+                    generateQuestionFields();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Logic to dynamically generate 20 or 40 questions with Options A, B, C, D
+        function generateQuestionFields() {
+            const term = document.getElementById('exam-term').value;
+            const container = document.getElementById('question-upload-area');
+            
+            // 3rd Term = 40 questions. 1st/2nd Term = 20 questions.
+            const questionCount = (term === '3') ? 40 : 20; 
+            
+            let html = `<h3>Uploading ${questionCount} Objective Questions</h3><br>`;
+            
+            for(let i = 1; i <= questionCount; i++) {
+                html += `
+                <div class="question-block">
+                    <label>Question ${i}</label>
+                    <textarea rows="2" placeholder="Enter question here..."></textarea>
+                    
+                    <div class="options-grid">
+                        <input type="text" placeholder="Option A">
+                        <input type="text" placeholder="Option B">
+                        <input type="text" placeholder="Option C">
+                        <input type="text" placeholder="Option D">
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <label style="display:inline;">Correct Answer: </label>
+                        <select style="width: 100px; display:inline;">
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>D</option>
+                        </select>
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
