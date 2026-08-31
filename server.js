@@ -6,7 +6,7 @@ const fs = require('fs');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const db = require('./Database');
+const db = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
