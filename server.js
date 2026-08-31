@@ -9,6 +9,13 @@ const nodemailer = require('nodemailer');
 const db = require('./database');
 
 const app = express();
+// Serve static files (HTML, CSS, JS) from the root folder
+app.use(express.static(__dirname));
+
+// Redirect root URL directly to Priceless1.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Priceless1.html'));
+});
 const PORT = process.env.PORT || 5000;
 
 // Ensure uploads folder exists
