@@ -104,8 +104,9 @@ app.get('/Priceless1.html', requireAdmin, (req, res) => {
 app.use(express.static(__dirname));
 
 // Redirect root URL to Login page
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+    res.sendFile(path.join(__dirname, 'Priceless1.html'));
 });
 
 /* ==========================================
