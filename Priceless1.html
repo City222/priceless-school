@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRICELESS INTERNATIONAL COMPUTER BASED SCHOOL | OWERRI NORTH, IMO STATE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <style>
         /* Base Styles - Clean & Light Theme */
         :root {
@@ -153,7 +154,7 @@
         .gallery-desc { color: #555; font-size: 0.88rem; line-height: 1.4; }
 
         /* Portals Container */
-        .portal-container { max-width: 650px; margin: 40px auto; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .portal-container { max-width: 750px; margin: 40px auto; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
         .portal-section { display: none; }
         .portal-section.active { display: block; }
 
@@ -161,7 +162,7 @@
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--brand-accent); }
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn { background: var(--secondary); color: var(--brand-accent); padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn { background: var(--secondary); color: var(--brand-accent); padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.2s; display: inline-block; text-decoration: none; text-align: center; }
         .btn:hover { background: #c5951c; }
 
         /* Admin Management Components */
@@ -190,9 +191,33 @@
         .role-teacher { background: #e0f2fe; color: #0369a1; }
         .role-student { background: #fef3c7; color: #92400e; }
 
-        /* Exam Generation UI */
+        /* Download List & News Feed */
+        .resource-card { background: var(--white); border-left: 4px solid var(--secondary); padding: 15px; margin-bottom: 12px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .resource-info h4 { color: var(--brand-accent); margin-bottom: 3px; }
+        .resource-info p { font-size: 0.85rem; color: #555; }
+        
+        .news-card { background: var(--white); border-left: 4px solid var(--brand-accent); padding: 15px; margin-bottom: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .news-card h4 { color: var(--brand-accent); font-size: 1.1rem; }
+        .news-card .news-meta { font-size: 0.78rem; color: #888; margin-bottom: 8px; font-weight: 600; }
+
+        /* Exam Generation & Active Interface UI */
         .question-block { background: var(--light); padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--brand-accent); border-radius: 4px; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+
+        .cbt-option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .cbt-option-item:hover { background: #e2e8f0; }
+        .cbt-option-item input[type="radio"] { width: auto; margin: 0; cursor: pointer; }
 
         /* Testimonials */
         .testimonials { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
@@ -245,7 +270,7 @@
             <button id="nav-activities-gallery" onclick="switchPortal('activities-gallery')">Activities Gallery</button>
             <button id="nav-student" onclick="switchPortal('student')">Student Portal</button>
             <button id="nav-admin" onclick="switchPortal('admin')">Admin</button>
-            <button id="nav-parent" onclick="switchPortal('parent')">Parents</button>
+            <button id="nav-parent" onclick="switchPortal('parent')">Parents & News</button>
             <button id="nav-admission" onclick="switchPortal('admission')">Admissions</button>
         </nav>
     </header>
@@ -504,6 +529,30 @@
                     </select>
                 </div>
                 <button class="btn" onclick="startCbtExam()">Start Examination</button>
+
+                <!-- Active CBT Examination Interface -->
+                <div id="cbt-exam-container" style="display: none; margin-top: 25px; padding: 20px; background: #fff; border: 1px solid var(--slate-border); border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--brand-accent); color: white; padding: 12px 15px; border-radius: 6px;">
+                        <h3 id="exam-title" style="margin:0; font-size: 1.1rem; color: #fff;">Exam</h3>
+                        <div id="exam-timer" style="font-size: 1.1rem; color: #facc15; font-weight: bold;">Time Remaining: 30:00</div>
+                    </div>
+                    
+                    <form id="cbt-questions-form" onsubmit="submitCbtExam(event)" style="margin-top: 20px;">
+                        <div id="cbt-questions-list"></div>
+                        <button type="submit" class="btn" style="background: #16a34a; color: white; width: 100%; margin-top: 20px; font-size: 1rem;">
+                            Submit Examination
+                        </button>
+                    </form>
+                </div>
+
+                <!-- CBT Examination Results Display Card -->
+                <div id="cbt-result-container" style="display: none; margin-top: 25px; padding: 25px; background: #f0fdf4; border: 2px solid #16a34a; border-radius: 8px; text-align: center;">
+                    <h2 style="color: #15803d; margin-bottom: 10px;">Examination Completed!</h2>
+                    <p style="font-size: 1.1rem; color: #333;">Your score has been processed and saved to your academic record.</p>
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--brand-accent); margin: 15px 0;" id="cbt-score-display">0 / 0</div>
+                    <p id="cbt-percentage-display" style="font-size: 1.2rem; font-weight: 600; color: #16a34a;"></p>
+                    <button class="btn" onclick="location.reload()" style="margin-top: 20px;">Return to Portal Home</button>
+                </div>
             </div>
 
             <!-- Admin Portal -->
@@ -514,6 +563,7 @@
                 <div class="admin-tab-nav">
                     <button class="admin-tab-btn active" id="tab-btn-users" onclick="showAdminTab('users')">User Accounts</button>
                     <button class="admin-tab-btn" id="tab-btn-exams" onclick="showAdminTab('exams')">Exam CBT & File Upload</button>
+                    <button class="admin-tab-btn" id="tab-btn-news" onclick="showAdminTab('news')">Publish News & Downloads</button>
                     <button class="admin-tab-btn" id="tab-btn-events" onclick="showAdminTab('events')">Upload Events & Photos</button>
                     <button class="admin-tab-btn" id="tab-btn-videos" onclick="showAdminTab('videos')">Upload Video</button>
                 </div>
@@ -649,9 +699,78 @@
                     
                     <div id="question-upload-area"></div>
                     <button class="btn" style="margin-top: 15px;">Publish Manual Exam to Portal</button>
+
+                    <hr style="margin: 25px 0; border: none; border-top: 1px solid var(--slate-border);">
+
+                    <!-- Admin Database Question Preview Area -->
+                    <div id="uploaded-exams-section" style="margin-top: 20px; padding: 20px; border: 1px solid var(--slate-border); background: #fff; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="color: var(--brand-accent);">Stored Database Questions Preview</h3>
+                            <button class="btn-action" style="width: auto; padding: 6px 16px;" onclick="fetchUploadedQuestions()">Refresh Questions List</button>
+                        </div>
+                        <div id="questions-display-area">
+                            <p style="color: #666;"><em>Click refresh to load parsed questions stored in the database.</em></p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tab 3: Upload Gallery Photos & Events -->
+                <!-- Tab 3: Upload News & Downloadable Past Questions/Bulletins -->
+                <div id="admin-sub-news" style="display: none;">
+                    <h3>Publish News Bulletins & Downloadable Resources</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Upload announcements, term newsletters, and past question papers for parent access.</p>
+
+                    <div class="mgmt-grid">
+                        <div class="mgmt-card">
+                            <h3>Post News Announcement</h3>
+                            <div class="form-group">
+                                <label>News Title</label>
+                                <input type="text" id="news-post-title" placeholder="e.g. 2nd Term PTA Meeting Notice">
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="news-post-cat">
+                                    <option value="General News">General Announcement</option>
+                                    <option value="Academic Notice">Academic Notice</option>
+                                    <option value="Fee Notice">Fee & Administrative Update</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Announcement Body</label>
+                                <textarea id="news-post-body" rows="4" placeholder="Enter full news message for parents..."></textarea>
+                            </div>
+                            <button class="btn-action" onclick="publishNewsBulletin()">Publish News</button>
+                            <div id="news-pub-status" class="credential-box"></div>
+                        </div>
+
+                        <div class="mgmt-card">
+                            <h3>Upload Past Question / Document</h3>
+                            <div class="form-group">
+                                <label>Document Title</label>
+                                <input type="text" id="res-post-title" placeholder="e.g. JSS3 Basic Science 2025 Past Exam Papers">
+                            </div>
+                            <div class="form-group">
+                                <label>Target Class Level</label>
+                                <select id="res-post-class">
+                                    <option value="General">All Classes / Newsletter</option>
+                                    <option value="JSS 1">JSS 1</option>
+                                    <option value="JSS 2">JSS 2</option>
+                                    <option value="JSS 3">JSS 3</option>
+                                    <option value="SS 1">SS 1</option>
+                                    <option value="SS 2">SS 2</option>
+                                    <option value="SS 3">SS 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select File (.pdf, .doc, .docx)</label>
+                                <input type="file" id="res-file-input" accept=".pdf,.doc,.docx,.png,.jpg">
+                            </div>
+                            <button class="btn-action btn-secondary" onclick="publishDownloadResource()">Upload for Download</button>
+                            <div id="res-pub-status" class="credential-box"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Upload Gallery Photos & Events -->
                 <div id="admin-sub-events" style="display: none;">
                     <h3>Publish School Events & Gallery Media</h3>
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Publish upcoming events, announcements, and photos directly into the Student or Activities Gallery.</p>
@@ -686,7 +805,7 @@
                     </div>
                 </div>
 
-                <!-- Tab 4: Upload Video Module -->
+                <!-- Tab 5: Upload Video Module -->
                 <div id="admin-sub-videos" style="display: none;">
                     <h3>Upload Educational & Event Videos</h3>
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Upload MP4 video files or paste media links for school events, CBT practical tutorials, and lectures.</p>
@@ -728,18 +847,58 @@
 
             </div>
 
-            <!-- Parent Portal -->
+            <!-- Parent Portal & Download Center -->
             <div id="parent-portal" class="portal-section">
-                <h2>Parent Portal</h2>
-                <div class="form-group">
-                    <label>Student Admission Number</label>
-                    <input type="text" placeholder="e.g., PCI/2026/001">
+                <h2>Parent Portal & Resource Center</h2>
+                <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">Access your ward's examination results, read official school news updates, and download past question papers.</p>
+                
+                <div class="mgmt-card" style="margin-bottom: 30px;">
+                    <h3>Check Ward Result</h3>
+                    <div class="form-group">
+                        <label>Student Admission Number</label>
+                        <input type="text" placeholder="e.g., PCI/2026/001">
+                    </div>
+                    <div class="form-group">
+                        <label>Portal PIN</label>
+                        <input type="password" placeholder="Enter PIN">
+                    </div>
+                    <button class="btn">View Child's Result</button>
                 </div>
-                <div class="form-group">
-                    <label>Portal PIN</label>
-                    <input type="password" placeholder="Enter PIN">
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--slate-border);">
+
+                <!-- Latest School News -->
+                <h3 style="color: var(--brand-accent); margin-bottom: 15px;">Official News & Announcements</h3>
+                <div id="parent-news-feed">
+                    <div class="news-card">
+                        <h4>Resumption Announcement for First Term 2026/2027 Session</h4>
+                        <div class="news-meta">Posted: September 1, 2026 | Category: General News</div>
+                        <p>We welcome all new and returning students to the new academic year. Please ensure all student registration credentials and uniforms are ready before resumption day.</p>
+                    </div>
                 </div>
-                <button class="btn">View Child's Result</button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--slate-border);">
+
+                <!-- Downloadable Past Questions & News Bulletins -->
+                <h3 style="color: var(--brand-accent); margin-bottom: 15px;">Download Center (Past Questions & News Bulletins)</h3>
+                <p style="font-size: 0.88rem; color: #666; margin-bottom: 15px;">Parents and students can download past CBT exam question packs, revision sheets, and downloadable news bulletins below:</p>
+                
+                <div id="parent-download-list">
+                    <div class="resource-card">
+                        <div class="resource-info">
+                            <h4>JSS 3 Mock Examination Past Questions Pack (2025/2026)</h4>
+                            <p>Class: JSS 3 | Subjects: English, Mathematics, Basic Science & Tech | PDF (2.4 MB)</p>
+                        </div>
+                        <a href="#" class="btn" onclick="alert('Downloading JSS 3 Past Questions Pack...')">Download File</a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-info">
+                            <h4>SS 2 Computer Hardware & GSM Repair Practical Manual</h4>
+                            <p>Class: SS 2 | Vocational CBT Study Guide | PDF (1.8 MB)</p>
+                        </div>
+                        <a href="#" class="btn" onclick="alert('Downloading SS 2 Practical Guide...')">Download File</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Admission Portal -->
@@ -776,6 +935,9 @@
     </footer>
 
     <script>
+        // Production API Base URL deployed on Render
+        const API_BASE_URL = 'https://priceless-school.onrender.com';
+
         // Hero Slider
         let currentSlide = 0;
         const slides = document.querySelectorAll('.hero-slide');
@@ -829,11 +991,13 @@
         function showAdminTab(tabName) {
             document.getElementById('admin-sub-users').style.display = (tabName === 'users') ? 'block' : 'none';
             document.getElementById('admin-sub-exams').style.display = (tabName === 'exams') ? 'block' : 'none';
+            document.getElementById('admin-sub-news').style.display = (tabName === 'news') ? 'block' : 'none';
             document.getElementById('admin-sub-events').style.display = (tabName === 'events') ? 'block' : 'none';
             document.getElementById('admin-sub-videos').style.display = (tabName === 'videos') ? 'block' : 'none';
             
             document.getElementById('tab-btn-users').classList.toggle('active', tabName === 'users');
             document.getElementById('tab-btn-exams').classList.toggle('active', tabName === 'exams');
+            document.getElementById('tab-btn-news').classList.toggle('active', tabName === 'news');
             document.getElementById('tab-btn-events').classList.toggle('active', tabName === 'events');
             document.getElementById('tab-btn-videos').classList.toggle('active', tabName === 'videos');
         }
@@ -955,6 +1119,77 @@
             });
         }
 
+        /* News & Resource Upload Handlers */
+        function publishNewsBulletin() {
+            const title = document.getElementById('news-post-title').value.trim();
+            const category = document.getElementById('news-post-cat').value;
+            const body = document.getElementById('news-post-body').value.trim();
+            const statusBox = document.getElementById('news-pub-status');
+
+            if (!title || !body) {
+                alert('Please fill out the news title and body text.');
+                return;
+            }
+
+            const newsFeed = document.getElementById('parent-news-feed');
+            const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+            const newsHTML = `
+                <div class="news-card">
+                    <h4>${title}</h4>
+                    <div class="news-meta">Posted: ${today} | Category: ${category}</div>
+                    <p>${body}</p>
+                </div>
+            `;
+
+            newsFeed.innerHTML = newsHTML + newsFeed.innerHTML;
+
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `<strong>News Article Published!</strong> Parents can now view this update in the Parent Portal.`;
+
+            document.getElementById('news-post-title').value = '';
+            document.getElementById('news-post-body').value = '';
+        }
+
+        function publishDownloadResource() {
+            const title = document.getElementById('res-post-title').value.trim();
+            const targetClass = document.getElementById('res-post-class').value;
+            const fileInput = document.getElementById('res-file-input');
+            const statusBox = document.getElementById('res-pub-status');
+
+            if (!title) {
+                alert('Please enter a document title.');
+                return;
+            }
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const fileUrl = URL.createObjectURL(file);
+            const downloadList = document.getElementById('parent-download-list');
+
+            const resourceHTML = `
+                <div class="resource-card">
+                    <div class="resource-info">
+                        <h4>${title}</h4>
+                        <p>Class Target: ${targetClass} | File: ${file.name} (${(file.size / (1024*1024)).toFixed(2)} MB)</p>
+                    </div>
+                    <a href="${fileUrl}" download="${file.name}" class="btn">Download File</a>
+                </div>
+            `;
+
+            downloadList.innerHTML = resourceHTML + downloadList.innerHTML;
+
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `<strong>Resource Uploaded!</strong> File <code>${file.name}</code> added to Parents Download Center.`;
+
+            document.getElementById('res-post-title').value = '';
+            fileInput.value = '';
+        }
+
         /* CBT Exam Document File Upload */
         function uploadExamDocument() {
             const fileInput = document.getElementById('exam-file-input');
@@ -966,10 +1201,53 @@
                 return;
             }
 
-            const fileName = fileInput.files[0].name;
+            const file = fileInput.files[0];
+
             statusBox.style.display = 'block';
-            statusBox.innerHTML = `<strong>Exam Paper Uploaded Successfully!</strong><br>Subject: <b>${subject}</b><br>File Processed: <code>${fileName}</code><br>Questions successfully attached to CBT examination engine.`;
-            fileInput.value = '';
+            statusBox.style.color = '#0369a1';
+            statusBox.innerHTML = `Processing document and populating questions...`;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                mammoth.extractRawText({ arrayBuffer: event.target.result })
+                    .then(function(result) {
+                        populateFormFromText(result.value);
+                        statusBox.style.color = '#065f46';
+                        statusBox.innerHTML = `<strong>Exam Paper Uploaded Successfully!</strong><br>Subject: <b>${subject}</b><br>File Processed: <code>${file.name}</code><br>Questions parsed into exam generator.`;
+                    })
+                    .catch(function(err) {
+                        statusBox.style.color = '#991b1b';
+                        statusBox.innerHTML = `<strong>Error reading document:</strong> ${err.message}`;
+                    });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function populateFormFromText(text) {
+            const rawQuestions = text.split(/\n(?=\d+\.\s*)/).filter(q => q.trim() !== '');
+            const questionBlocks = document.querySelectorAll('.question-block');
+
+            rawQuestions.forEach((qText, index) => {
+                const lines = qText.split('\n').map(l => l.trim()).filter(Boolean);
+                
+                const questionMatch = lines[0] ? lines[0].replace(/^\d+\.\s*/, '') : '';
+                const optA = (lines.find(l => l.startsWith('A)')) || '').replace(/^A\)\s*/, '');
+                const optB = (lines.find(l => l.startsWith('B)')) || '').replace(/^B\)\s*/, '');
+                const optC = (lines.find(l => l.startsWith('C)')) || '').replace(/^C\)\s*/, '');
+                const optD = (lines.find(l => l.startsWith('D)')) || '').replace(/^D\)\s*/, '');
+                const ansMatch = (lines.find(l => l.toLowerCase().startsWith('answer:')) || '').split(':')[1]?.trim();
+
+                const qBox = questionBlocks[index]; 
+                if (qBox) {
+                    const inputs = qBox.querySelectorAll('input, textarea, select');
+                    if (inputs[0]) inputs[0].value = questionMatch;
+                    if (inputs[1]) inputs[1].value = optA;
+                    if (inputs[2]) inputs[2].value = optB;
+                    if (inputs[3]) inputs[3].value = optC;
+                    if (inputs[4]) inputs[4].value = optD;
+                    if (inputs[5] && ansMatch) inputs[5].value = ansMatch.toUpperCase();
+                }
+            });
         }
 
         /* Event / Gallery Upload Handler */
@@ -1073,16 +1351,160 @@
             fileInput.value = '';
         }
 
-        // Student Exam Starter
-        function startCbtExam() {
+        /* Active CBT State Variables */
+        let activeExamQuestions = [];
+        let examTimerInterval = null;
+
+        /* Student CBT Exam Handler with Server Integration & UI Rendering */
+        async function startCbtExam() {
             const subject = document.getElementById('std-exam-subject').value;
             const studentClass = document.getElementById('std-exam-class').value;
+            const cbtBox = document.getElementById('cbt-exam-container');
+            const resultBox = document.getElementById('cbt-result-container');
+            const questionsListDiv = document.getElementById('cbt-questions-list');
             
-            if(!subject) {
+            if (!subject) {
                 alert('Please select an examination subject.');
                 return;
             }
-            alert(`Starting ${studentClass} CBT Exam for: ${subject}.\nTimer and question sheet loaded.`);
+
+            resultBox.style.display = 'none';
+            questionsListDiv.innerHTML = '<p style="text-align:center; padding: 20px;">Fetching questions from server...</p>';
+            cbtBox.style.display = 'block';
+
+            try {
+                // Fetching parsed exam questions from the live Render backend server
+                const response = await fetch(`${API_BASE_URL}/api/questions?subject=${encodeURIComponent(subject)}&class_level=${encodeURIComponent(studentClass)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Server returned an error or endpoint not found.');
+                }
+                
+                activeExamQuestions = await response.json();
+
+                if (!activeExamQuestions || activeExamQuestions.length === 0) {
+                    questionsListDiv.innerHTML = '<p style="color:red; text-align:center; padding: 10px;">No uploaded questions found in the database for this subject and class.</p>';
+                    return;
+                }
+
+                // Render CBT Questions dynamically
+                document.getElementById('exam-title').innerText = `${subject} CBT Exam (${studentClass})`;
+                
+                questionsListDiv.innerHTML = activeExamQuestions.map((q, idx) => `
+                    <div class="question-block" style="margin-bottom: 20px;">
+                        <p style="font-weight: bold; font-size: 1.05rem; margin-bottom: 12px; color: var(--brand-accent);">
+                            ${idx + 1}. ${q.question_text}
+                        </p>
+                        <div class="cbt-option-item">
+                            <input type="radio" id="q_${idx}_a" name="question_${idx}" value="A">
+                            <label for="q_${idx}_a">A) ${q.option_a}</label>
+                        </div>
+                        <div class="cbt-option-item">
+                            <input type="radio" id="q_${idx}_b" name="question_${idx}" value="B">
+                            <label for="q_${idx}_b">B) ${q.option_b}</label>
+                        </div>
+                        <div class="cbt-option-item">
+                            <input type="radio" id="q_${idx}_c" name="question_${idx}" value="C">
+                            <label for="q_${idx}_c">C) ${q.option_c}</label>
+                        </div>
+                        <div class="cbt-option-item">
+                            <input type="radio" id="q_${idx}_d" name="question_${idx}" value="D">
+                            <label for="q_${idx}_d">D) ${q.option_d}</label>
+                        </div>
+                    </div>
+                `).join('');
+
+                startCbtTimer(90 * 60);
+
+            } catch (err) {
+                console.error('Error starting CBT Exam:', err);
+                questionsListDiv.innerHTML = `
+                    <div style="padding: 15px; background: #fee2e2; border: 1px solid #ef4444; border-radius: 4px; color: #991b1b;">
+                        <strong>Unable to Connect to Database Server!</strong><br>
+                        Please ensure the backend service on Render (<code>${API_BASE_URL}</code>) is active.
+                    </div>
+                `;
+            }
+        }
+
+        /* Countdown Timer Engine */
+        function startCbtTimer(seconds) {
+            clearInterval(examTimerInterval);
+            let timeRemaining = seconds;
+            const timerDisplay = document.getElementById('exam-timer');
+
+            examTimerInterval = setInterval(() => {
+                const mins = Math.floor(timeRemaining / 60);
+                const secs = timeRemaining % 60;
+                timerDisplay.innerText = `Time Remaining: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    alert('Time is up! Your examination will now be submitted automatically.');
+                    document.getElementById('cbt-questions-form').dispatchEvent(new Event('submit'));
+                }
+                timeRemaining--;
+            }, 1000);
+        }
+
+        /* Auto-Grade & Submit CBT Handler */
+        function submitCbtExam(event) {
+            event.preventDefault();
+            clearInterval(examTimerInterval);
+
+            let totalScore = 0;
+            const form = document.getElementById('cbt-questions-form');
+            const formData = new FormData(form);
+
+            activeExamQuestions.forEach((q, idx) => {
+                const selectedAns = formData.get(`question_${idx}`);
+                if (selectedAns && q.correct_option && selectedAns.toUpperCase() === q.correct_option.toUpperCase()) {
+                    totalScore++;
+                }
+            });
+
+            const totalQuestions = activeExamQuestions.length;
+            const percentage = totalQuestions > 0 ? ((totalScore / totalQuestions) * 100).toFixed(1) : 0;
+
+            document.getElementById('cbt-exam-container').style.display = 'none';
+            document.getElementById('cbt-score-display').innerText = `${totalScore} / ${totalQuestions}`;
+            document.getElementById('cbt-percentage-display').innerText = `Final Score: ${percentage}%`;
+            document.getElementById('cbt-result-container').style.display = 'block';
+        }
+
+        /* Admin Database Questions Preview Fetcher */
+        async function fetchUploadedQuestions() {
+            const displayArea = document.getElementById('questions-display-area');
+            displayArea.innerHTML = '<p>Loading questions from database...</p>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/questions`);
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    displayArea.innerHTML = '<p style="color:#666;">No questions found in the database.</p>';
+                    return;
+                }
+
+                displayArea.innerHTML = data.map((q, index) => `
+                    <div style="border-bottom: 1px solid #eee; padding: 12px 0;">
+                        <p style="font-weight: bold; color: var(--brand-accent);">Q${index + 1}: ${q.question_text}</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9em; margin-top: 6px;">
+                            <span><strong>A:</strong> ${q.option_a}</span>
+                            <span><strong>B:</strong> ${q.option_b}</span>
+                            <span><strong>C:</strong> ${q.option_c}</span>
+                            <span><strong>D:</strong> ${q.option_d}</span>
+                        </div>
+                        <p style="color: green; font-size: 0.85em; margin-top: 6px;">
+                            <strong>Correct Answer:</strong> Option ${q.correct_option || 'N/A'}
+                        </p>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error('Error fetching questions:', err);
+                displayArea.innerHTML = `<p style="color:#ef4444;">Failed to load questions from backend server (<code>${API_BASE_URL}</code>).</p>`;
+            }
         }
 
         // CBT Question Generator
