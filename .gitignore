@@ -1,4 +1,4 @@
 node_modules/
 .env
-uploads/
 priceless_school.db
+!uploads/.gitkeep
