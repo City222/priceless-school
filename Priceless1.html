@@ -290,7 +290,7 @@
 
     <header>
         <div class="logo-area">
-            <img src="images/kid logo.png" alt="Aukland Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50?text=LOGO'">
+            <img src="images/kid logo.png" alt="Priceless Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50?text=LOGO'">
             <div>
                 <h2>PRICELESS CHILD INT'L STANDARD & COMPUTER BASED SCHOOL</h2>
                 <small>SIR HENRY AKUJIOBI STREET, AKWAKUMA, OWERRI NORTH, IMO STATE | OPEN: MON - FRI (8:00 AM - 3:30 PM)</small>
@@ -738,7 +738,7 @@
                         <select id="exam-term" onchange="generateQuestionFields()">
                             <option value="1">First Term (20 Objectives)</option>
                             <option value="2">Second Term (20 Objectives)</option>
-                            <option value="3">Third Term (40 Objectives)</option>
+                            <option value="3" selected>Third Term (40 Objectives)</option>
                         </select>
                     </div>
                     
@@ -834,7 +834,7 @@
                         </div>
                         <div class="form-group">
                             <label>Event Date</label>
-                            <input type="date" id="event-date">
+                            <input type="date" id="event-date" value="2026-09-03">
                         </div>
                         <div class="form-group">
                             <label>Description & Highlights</label>
@@ -981,7 +981,8 @@
 
         /* Dynamic Date, Month, Term, and Academic Session Calculation */
         function updateAcademicCalendar() {
-            const now = new Date();
+            // Explicit 2026 Date Initialization
+            const now = new Date(2026, 8, 3); // September 3, 2026
             const year = now.getFullYear();
             const monthIndex = now.getMonth(); 
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1126,7 +1127,7 @@
                     detail: 'Super User',
                     username: 'PCI-ADMIN',
                     credential: 'AdminPass2026!',
-                    dateCreated: new Date().toLocaleDateString()
+                    dateCreated: new Date(2026, 8, 3).toLocaleDateString()
                 });
                 saveUsers(users);
             }
@@ -1153,7 +1154,7 @@
                 detail: subject,
                 username: username,
                 credential: defaultPassword,
-                dateCreated: new Date().toLocaleDateString()
+                dateCreated: new Date(2026, 8, 3).toLocaleDateString()
             });
             saveUsers(users);
 
@@ -1178,7 +1179,7 @@
             let users = getUsers();
             const studentCount = users.filter(u => u.role === 'Student').length + 1;
             
-            const currentYear = new Date().getFullYear();
+            const currentYear = 2026;
             const sequenceStr = String(studentCount).padStart(3, '0');
             const admissionNo = `PCI/${currentYear}/${sequenceStr}`;
             const defaultPin = Math.floor(1000 + Math.random() * 9000).toString();
@@ -1190,7 +1191,7 @@
                 detail: studentClass,
                 username: admissionNo,
                 credential: `PIN: ${defaultPin}`,
-                dateCreated: new Date().toLocaleDateString()
+                dateCreated: new Date(2026, 8, 3).toLocaleDateString()
             });
             saveUsers(users);
 
@@ -1235,7 +1236,7 @@
             }
 
             const newsFeed = document.getElementById('parent-news-feed');
-            const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const today = new Date(2026, 8, 3).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
             const newsHTML = `
                 <div class="news-card">
