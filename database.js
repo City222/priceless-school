@@ -42,12 +42,16 @@ if (isProduction) {
                 CREATE TABLE IF NOT EXISTS questions (
                     id SERIAL PRIMARY KEY,
                     exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
+                    teacher_name VARCHAR(255),
+                    subject VARCHAR(100),
+                    class_level VARCHAR(50),
                     question_text TEXT NOT NULL,
                     option_a TEXT NOT NULL,
                     option_b TEXT NOT NULL,
                     option_c TEXT NOT NULL,
                     option_d TEXT NOT NULL,
-                    correct_option VARCHAR(10) NOT NULL
+                    correct_option VARCHAR(10) NOT NULL,
+                    status VARCHAR(20) DEFAULT 'pending'
                 );
 
                 CREATE TABLE IF NOT EXISTS exam_results (
@@ -60,6 +64,18 @@ if (isProduction) {
                     total_questions INT NOT NULL,
                     percentage REAL NOT NULL,
                     date_taken TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+
+                CREATE TABLE IF NOT EXISTS student_results (
+                    id SERIAL PRIMARY KEY,
+                    student_id VARCHAR(100) NOT NULL,
+                    student_name VARCHAR(255) NOT NULL,
+                    class_level VARCHAR(50) NOT NULL,
+                    subject VARCHAR(100) NOT NULL,
+                    score INT NOT NULL,
+                    total_questions INT NOT NULL,
+                    term VARCHAR(50) NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
 
                 CREATE TABLE IF NOT EXISTS events (
@@ -143,13 +159,17 @@ if (isProduction) {
         db.run(`
             CREATE TABLE IF NOT EXISTS questions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                exam_id INTEGER NOT NULL,
+                exam_id INTEGER,
+                teacher_name TEXT,
+                subject TEXT,
+                class_level TEXT,
                 question_text TEXT NOT NULL,
                 option_a TEXT NOT NULL,
                 option_b TEXT NOT NULL,
                 option_c TEXT NOT NULL,
                 option_d TEXT NOT NULL,
                 correct_option TEXT NOT NULL,
+                status TEXT DEFAULT 'pending',
                 FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
             )
         `);
@@ -169,6 +189,20 @@ if (isProduction) {
         `);
 
         db.run(`
+            CREATE TABLE IF NOT EXISTS student_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                student_id TEXT NOT NULL,
+                student_name TEXT NOT NULL,
+                class_level TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                score INTEGER NOT NULL,
+                total_questions INTEGER NOT NULL,
+                term TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        db.run(`
             CREATE TABLE IF NOT EXISTS events (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 gallery_target TEXT CHECK(gallery_target IN ('student', 'activities')) NOT NULL,
@@ -180,7 +214,6 @@ if (isProduction) {
             )
         `);
 
-        // New Parents & News Tables
         db.run(`
             CREATE TABLE IF NOT EXISTS news (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

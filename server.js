@@ -104,7 +104,6 @@ app.get('/Priceless1.html', requireAdmin, (req, res) => {
 app.use(express.static(__dirname));
 
 // Redirect root URL to Login page
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'Priceless1.html'));
 });
@@ -225,24 +224,73 @@ app.get('/api/users', async (req, res) => {
 });
 
 /* ==========================================
-   CBT EXAM MODULE
+   TEACHER WORKFLOW & QUESTION APPROVAL MODULE
+========================================== */
+
+// 1. Teacher Uploads Question (Defaults to status = 'pending')
+app.post('/api/questions/upload', requireTeacher, async (req, res) => {
+    const { teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option } = req.body;
+    
+    if (!teacher_name || !subject || !class_level || !question_text || !correct_option) {
+        return res.status(400).json({ error: 'All question details are required.' });
+    }
+
+    try {
+        await queryDb(
+            `INSERT INTO questions (teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option, status) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+            [teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option]
+        );
+        res.json({ success: true, message: 'Question submitted for Admin approval.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 2. Admin Fetches All Pending Questions
+app.get('/api/admin/pending-questions', requireAdmin, async (req, res) => {
+    try {
+        const { rows } = await queryDb(`SELECT * FROM questions WHERE status = 'pending' ORDER BY id DESC`);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 3. Admin Approves or Rejects a Question
+app.post('/api/admin/approve-question', requireAdmin, async (req, res) => {
+    const { question_id, action } = req.body; // action: 'approved' or 'rejected'
+    if (!question_id || !action) {
+        return res.status(400).json({ error: 'Question ID and action are required.' });
+    }
+
+    try {
+        await queryDb(`UPDATE questions SET status = ? WHERE id = ?`, [action, question_id]);
+        res.json({ success: true, message: `Question ${action} successfully.` });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/* ==========================================
+   CBT EXAM & STUDENT RESULT MODULES
 ========================================== */
 
 app.get('/api/questions', async (req, res) => {
     const { subject, class_level } = req.query;
 
     let sql = `
-        SELECT q.id, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_option 
-        FROM questions q
-        JOIN exams e ON q.exam_id = e.id
+        SELECT id, question_text, option_a, option_b, option_c, option_d, correct_option 
+        FROM questions 
+        WHERE status = 'approved'
     `;
     const params = [];
 
     if (subject && class_level) {
-        sql += ` WHERE LOWER(TRIM(e.subject)) = LOWER(TRIM(?)) AND LOWER(TRIM(e.class_level)) = LOWER(TRIM(?))`;
+        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM(?)) AND LOWER(TRIM(class_level)) = LOWER(TRIM(?))`;
         params.push(subject, class_level);
     } else if (subject) {
-        sql += ` WHERE LOWER(TRIM(e.subject)) = LOWER(TRIM(?))`;
+        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM(?))`;
         params.push(subject);
     }
 
@@ -254,7 +302,7 @@ app.get('/api/questions', async (req, res) => {
     }
 });
 
-app.post('/api/exams/create', async (req, res) => {
+app.post('/api/exams/create', requireTeacher, async (req, res) => {
     const subject = req.body.subject;
     const classLevel = req.body.classLevel || req.body.class_level;
     const term = req.body.term || 1;
@@ -281,7 +329,7 @@ app.post('/api/exams/create', async (req, res) => {
             const correct = q.correct || q.correct_option;
 
             await queryDb(
-                `INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'approved')`,
                 [examId, text, a, b, c, d, correct]
             );
         }
@@ -293,10 +341,10 @@ app.post('/api/exams/create', async (req, res) => {
 });
 
 app.post('/api/exams/submit', async (req, res) => {
-    const { studentId, studentName, classLevel, subject, examId, answers } = req.body;
+    const { studentId, studentName, classLevel, subject, term, answers } = req.body;
 
     try {
-        const { rows: questions } = await queryDb(`SELECT id, correct_option FROM questions WHERE exam_id = ?`, [examId]);
+        const { rows: questions } = await queryDb(`SELECT id, correct_option FROM questions WHERE LOWER(TRIM(subject)) = LOWER(TRIM(?)) AND status = 'approved'`, [subject]);
 
         let score = 0;
         questions.forEach(q => {
@@ -313,7 +361,33 @@ app.post('/api/exams/submit', async (req, res) => {
             [studentId, studentName, classLevel, subject, score, total, percentage]
         );
 
+        if (term) {
+            await queryDb(
+                `INSERT INTO student_results (student_id, student_name, class_level, subject, score, total_questions, term) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [studentId, studentName, classLevel, subject, score, total, term]
+            );
+        }
+
         res.json({ score, total, percentage });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Student Terminal Result Checker Route
+app.get('/api/results/check', async (req, res) => {
+    const { student_id, term } = req.query;
+
+    if (!student_id || !term) {
+        return res.status(400).json({ error: 'Student ID and Term are required.' });
+    }
+
+    try {
+        const { rows } = await queryDb(
+            `SELECT * FROM student_results WHERE LOWER(TRIM(student_id)) = LOWER(TRIM(?)) AND LOWER(TRIM(term)) = LOWER(TRIM(?)) ORDER BY created_at DESC`,
+            [student_id, term]
+        );
+        res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
