@@ -23,7 +23,6 @@ const isPg = typeof db.query === 'function';
 const queryDb = (sql, params = []) => {
     return new Promise((resolve, reject) => {
         if (isPg) {
-            // Convert SQLite '?' parameters to PostgreSQL '$1, $2, ...'
             let paramIndex = 1;
             const pgSql = sql.replace(/\?/g, () => `$${paramIndex++}`);
             
@@ -31,7 +30,6 @@ const queryDb = (sql, params = []) => {
                 .then(res => resolve({ rows: res.rows, lastID: res.rows[0]?.id }))
                 .catch(err => reject(err));
         } else {
-            // Check query intent (SELECT vs INSERT/UPDATE)
             const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
             if (isSelect) {
                 db.all(sql, params, (err, rows) => {
@@ -77,7 +75,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'priceless_school_secret_key',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 } // Session expires in 24 hours
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 
 // 2. SECURITY BOUNCER MIDDLEWARE
@@ -169,7 +167,7 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ==========================================
-   USER ADMISSIONS & OWNER NOTIFICATIONS
+   USER ADMISSIONS & MANAGING USERS
 ========================================== */
 
 app.post('/api/users/student', async (req, res) => {
@@ -216,8 +214,75 @@ app.post('/api/users/student', async (req, res) => {
 
 app.get('/api/users', async (req, res) => {
     try {
-        const { rows } = await queryDb(`SELECT system_id, full_name, email, role, detail, username, pin, created_at FROM users ORDER BY id DESC`);
+        const { rows } = await queryDb(`SELECT id, system_id, full_name, email, role, detail, username, pin, created_at FROM users ORDER BY id DESC`);
         res.json({ users: rows });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE User Account (Admin Only)
+app.delete('/api/users/:id', requireAdmin, async (req, res) => {
+    try {
+        await queryDb(`DELETE FROM users WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'User deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/* ==========================================
+   VIDEO & MEDIA UPLOAD MODULE
+========================================== */
+
+app.get('/api/videos', async (req, res) => {
+    try {
+        const { rows } = await queryDb(`SELECT * FROM videos ORDER BY id DESC`);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/videos', requireAdmin, upload.single('video_file'), async (req, res) => {
+    const { title, category, description, video_url } = req.body;
+    let fileUrl = video_url || '';
+
+    if (req.file) {
+        fileUrl = `/uploads/${req.file.filename}`;
+    }
+
+    if (!title || !category) {
+        return res.status(400).json({ error: 'Title and category are required.' });
+    }
+
+    try {
+        await queryDb(
+            `INSERT INTO videos (title, category, description, file_url) VALUES (?, ?, ?, ?)`,
+            [title, category, description, fileUrl]
+        );
+        res.json({ message: 'Video uploaded successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE Uploaded Video or Media Link (Admin Only)
+app.delete('/api/videos/:id', requireAdmin, async (req, res) => {
+    try {
+        const video = await getDbRow(`SELECT * FROM videos WHERE id = ?`, [req.params.id]);
+        if (!video) return res.status(404).json({ error: 'Video record not found.' });
+
+        // Remove actual video file if stored on server
+        if (video.file_url && video.file_url.startsWith('/uploads/')) {
+            const filePath = path.join(__dirname, video.file_url);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        await queryDb(`DELETE FROM videos WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'Video post deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -227,7 +292,6 @@ app.get('/api/users', async (req, res) => {
    TEACHER WORKFLOW & QUESTION APPROVAL MODULE
 ========================================== */
 
-// 1. Teacher Uploads Question (Defaults to status = 'pending')
 app.post('/api/questions/upload', requireTeacher, async (req, res) => {
     const { teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option } = req.body;
     
@@ -247,7 +311,6 @@ app.post('/api/questions/upload', requireTeacher, async (req, res) => {
     }
 });
 
-// 2. Admin Fetches All Pending Questions
 app.get('/api/admin/pending-questions', requireAdmin, async (req, res) => {
     try {
         const { rows } = await queryDb(`SELECT * FROM questions WHERE status = 'pending' ORDER BY id DESC`);
@@ -257,9 +320,8 @@ app.get('/api/admin/pending-questions', requireAdmin, async (req, res) => {
     }
 });
 
-// 3. Admin Approves or Rejects a Question
 app.post('/api/admin/approve-question', requireAdmin, async (req, res) => {
-    const { question_id, action } = req.body; // action: 'approved' or 'rejected'
+    const { question_id, action } = req.body;
     if (!question_id || !action) {
         return res.status(400).json({ error: 'Question ID and action are required.' });
     }
@@ -267,6 +329,16 @@ app.post('/api/admin/approve-question', requireAdmin, async (req, res) => {
     try {
         await queryDb(`UPDATE questions SET status = ? WHERE id = ?`, [action, question_id]);
         res.json({ success: true, message: `Question ${action} successfully.` });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE Question (Admin or Teacher)
+app.delete('/api/questions/:id', requireTeacher, async (req, res) => {
+    try {
+        await queryDb(`DELETE FROM questions WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'Question deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -340,6 +412,17 @@ app.post('/api/exams/create', requireTeacher, async (req, res) => {
     }
 });
 
+// DELETE Exam and associated Questions (Teacher/Admin Only)
+app.delete('/api/exams/:id', requireTeacher, async (req, res) => {
+    try {
+        await queryDb(`DELETE FROM questions WHERE exam_id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM exams WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'Exam and linked questions deleted.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.post('/api/exams/submit', async (req, res) => {
     const { studentId, studentName, classLevel, subject, term, answers } = req.body;
 
@@ -374,7 +457,6 @@ app.post('/api/exams/submit', async (req, res) => {
     }
 });
 
-// Student Terminal Result Checker Route
 app.get('/api/results/check', async (req, res) => {
     const { student_id, term } = req.query;
 
@@ -415,7 +497,6 @@ app.post('/api/parent/results', async (req, res) => {
     }
 });
 
-// GET all published news
 app.get('/api/news', async (req, res) => {
     try {
         const { rows } = await queryDb(`SELECT * FROM news ORDER BY created_at DESC`);
@@ -425,7 +506,6 @@ app.get('/api/news', async (req, res) => {
     }
 });
 
-// POST new bulletin announcement
 app.post('/api/news', requireTeacher, async (req, res) => {
     const { title, category, body } = req.body;
     if (!title || !category || !body) {
@@ -440,7 +520,16 @@ app.post('/api/news', requireTeacher, async (req, res) => {
     }
 });
 
-// GET list of parent downloads/resources
+// DELETE News Article (Teacher/Admin Only)
+app.delete('/api/news/:id', requireTeacher, async (req, res) => {
+    try {
+        await queryDb(`DELETE FROM news WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'News post deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.get('/api/resources', async (req, res) => {
     try {
         const { rows } = await queryDb(`SELECT * FROM resources ORDER BY uploaded_at DESC`);
@@ -450,7 +539,6 @@ app.get('/api/resources', async (req, res) => {
     }
 });
 
-// POST upload new parent resource (PDF/Document)
 app.post('/api/resources', requireTeacher, upload.single('file'), async (req, res) => {
     const { title, target_class } = req.body;
     if (!req.file || !title || !target_class) {
@@ -471,7 +559,27 @@ app.post('/api/resources', requireTeacher, upload.single('file'), async (req, re
     }
 });
 
-// Debug Endpoint to view existing database exams
+// DELETE Download Resource File (Teacher/Admin Only)
+app.delete('/api/resources/:id', requireTeacher, async (req, res) => {
+    try {
+        const resource = await getDbRow(`SELECT * FROM resources WHERE id = ?`, [req.params.id]);
+        if (!resource) return res.status(404).json({ error: 'Resource file not found.' });
+
+        // Unlink physical document from /uploads folder
+        if (resource.file_url && resource.file_url.startsWith('/uploads/')) {
+            const filePath = path.join(__dirname, resource.file_url);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        await queryDb(`DELETE FROM resources WHERE id = ?`, [req.params.id]);
+        res.json({ success: true, message: 'Resource document deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.get('/api/debug/exams', async (req, res) => {
     try {
         const { rows } = await queryDb(`SELECT * FROM exams`);
