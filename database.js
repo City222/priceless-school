@@ -9,9 +9,15 @@ let db;
 if (isProduction) {
     // --- POSTGRESQL CONFIGURATION (Render / Production) ---
     const { Pool } = require('pg');
+    
     const pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false }
+    });
+
+    // Handle idle connection errors to prevent process crash
+    pool.on('error', (err) => {
+        console.error('Unexpected error on idle PostgreSQL client:', err);
     });
 
     const initPgDb = async () => {
@@ -104,6 +110,15 @@ if (isProduction) {
                     file_name VARCHAR(255) NOT NULL,
                     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
+
+                CREATE TABLE IF NOT EXISTS videos (
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    category VARCHAR(100) NOT NULL,
+                    description TEXT,
+                    file_url TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
             `);
 
             // Seed Super Admin if not existing
@@ -114,9 +129,9 @@ if (isProduction) {
                 ON CONFLICT (system_id) DO NOTHING;
             `, [adminPasswordHash]);
 
-            console.log("PostgreSQL Database initialized successfully.");
+            console.log("PostgreSQL Database connected and tables verified successfully.");
         } catch (err) {
-            console.error("Error initializing PostgreSQL database:", err);
+            console.error("Error connecting to PostgreSQL database:", err.message);
         }
     };
 
@@ -232,6 +247,17 @@ if (isProduction) {
                 file_url TEXT NOT NULL,
                 file_name TEXT NOT NULL,
                 uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS videos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                category TEXT NOT NULL,
+                description TEXT,
+                file_url TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
 
