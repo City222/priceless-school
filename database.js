@@ -4,18 +4,18 @@ const bcrypt = require('bcryptjs');
 // Determine environment: Use PostgreSQL on Render/Production, SQLite for Local Testing
 const isProduction = process.env.DATABASE_URL || process.env.NODE_ENV === 'production';
 
-let db;
+let pool;
+let sqliteDb;
 
 if (isProduction) {
     // --- POSTGRESQL CONFIGURATION (Render / Production) ---
     const { Pool } = require('pg');
     
-    const pool = new Pool({
+    pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false }
     });
 
-    // Handle idle connection errors to prevent process crash
     pool.on('error', (err) => {
         console.error('Unexpected error on idle PostgreSQL client:', err);
     });
@@ -79,7 +79,7 @@ if (isProduction) {
                     class_level VARCHAR(50) NOT NULL,
                     subject VARCHAR(100) NOT NULL,
                     score INT NOT NULL,
-                    total_questions INT NOT NULL,
+                    total_questions INTEGER NOT NULL,
                     term VARCHAR(50) NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
@@ -121,7 +121,6 @@ if (isProduction) {
                 );
             `);
 
-            // Seed Super Admin if not existing
             const adminPasswordHash = bcrypt.hashSync('AdminPass2026!', 10);
             await pool.query(`
                 INSERT INTO users (system_id, full_name, email, role, detail, username, password_hash)
@@ -129,23 +128,22 @@ if (isProduction) {
                 ON CONFLICT (system_id) DO NOTHING;
             `, [adminPasswordHash]);
 
-            console.log("PostgreSQL Database connected and tables verified successfully.");
+            console.log("PostgreSQL Database connected and initialized successfully.");
         } catch (err) {
             console.error("Error connecting to PostgreSQL database:", err.message);
         }
     };
 
     initPgDb();
-    db = pool;
 
 } else {
     // --- SQLITE CONFIGURATION (Local Development) ---
     const sqlite3 = require('sqlite3').verbose();
     const dbPath = path.resolve(__dirname, 'priceless_school.db');
-    db = new sqlite3.Database(dbPath);
+    sqliteDb = new sqlite3.Database(dbPath);
 
-    db.serialize(() => {
-        db.run(`
+    sqliteDb.serialize(() => {
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 system_id TEXT UNIQUE NOT NULL,
@@ -160,7 +158,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS exams (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 subject TEXT NOT NULL,
@@ -171,7 +169,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS questions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 exam_id INTEGER,
@@ -189,7 +187,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS exam_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 student_id TEXT NOT NULL,
@@ -203,7 +201,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS student_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 student_id TEXT NOT NULL,
@@ -217,7 +215,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS events (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 gallery_target TEXT CHECK(gallery_target IN ('student', 'activities')) NOT NULL,
@@ -229,7 +227,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS news (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -239,7 +237,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS resources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -250,7 +248,7 @@ if (isProduction) {
             )
         `);
 
-        db.run(`
+        sqliteDb.run(`
             CREATE TABLE IF NOT EXISTS videos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -262,7 +260,7 @@ if (isProduction) {
         `);
 
         const adminPasswordHash = bcrypt.hashSync('AdminPass2026!', 10);
-        db.run(`
+        sqliteDb.run(`
             INSERT OR IGNORE INTO users (system_id, full_name, email, role, detail, username, password_hash)
             VALUES ('ADMIN-001', 'System Administrator', 'admin@pricelessschool.com', 'Admin', 'Super User', 'PCI-ADMIN', ?)
         `, [adminPasswordHash]);
@@ -271,4 +269,29 @@ if (isProduction) {
     });
 }
 
-module.exports = db;
+// Unified Query Interface for both PostgreSQL and SQLite
+const query = (text, params = []) => {
+    if (isProduction) {
+        return pool.query(text, params);
+    } else {
+        return new Promise((resolve, reject) => {
+            // Convert $1, $2, $3 parameter syntax to ? for SQLite
+            const sqliteText = text.replace(/\$\d+/g, '?');
+            const trimmed = sqliteText.trim().toUpperCase();
+
+            if (trimmed.startsWith('SELECT')) {
+                sqliteDb.all(sqliteText, params, (err, rows) => {
+                    if (err) reject(err);
+                    else resolve({ rows });
+                });
+            } else {
+                sqliteDb.run(sqliteText, params, function (err) {
+                    if (err) reject(err);
+                    else resolve({ rows: [], lastID: this.lastID, changes: this.changes });
+                });
+            }
+        });
+    }
+};
+
+module.exports = { query, isProduction };
