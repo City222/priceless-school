@@ -16,52 +16,14 @@ if (!fs.existsSync('uploads')) {
     fs.mkdirSync('uploads');
 }
 
-// Check if running on PostgreSQL pool or SQLite db instance
-const isPg = typeof db.query === 'function';
-
-// Helper query function to bridge SQLite and PostgreSQL APIs
-const queryDb = (sql, params = []) => {
-    return new Promise((resolve, reject) => {
-        if (isPg) {
-            let paramIndex = 1;
-            const pgSql = sql.replace(/\?/g, () => `$${paramIndex++}`);
-            
-            db.query(pgSql, params)
-                .then(res => resolve({ rows: res.rows, lastID: res.rows[0]?.id }))
-                .catch(err => reject(err));
-        } else {
-            const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
-            if (isSelect) {
-                db.all(sql, params, (err, rows) => {
-                    if (err) reject(err);
-                    else resolve({ rows });
-                });
-            } else {
-                db.run(sql, params, function (err) {
-                    if (err) reject(err);
-                    else resolve({ lastID: this.lastID });
-                });
-            }
-        }
-    });
+// Database helper using unified query wrapper from database.js
+const queryDb = async (sql, params = []) => {
+    return await db.query(sql, params);
 };
 
-// Helper for single row queries
-const getDbRow = (sql, params = []) => {
-    return new Promise((resolve, reject) => {
-        if (isPg) {
-            let paramIndex = 1;
-            const pgSql = sql.replace(/\?/g, () => `$${paramIndex++}`);
-            db.query(pgSql, params)
-                .then(res => resolve(res.rows[0] || null))
-                .catch(err => reject(err));
-        } else {
-            db.get(sql, params, (err, row) => {
-                if (err) reject(err);
-                else resolve(row || null);
-            });
-        }
-    });
+const getDbRow = async (sql, params = []) => {
+    const res = await db.query(sql, params);
+    return res.rows && res.rows.length > 0 ? res.rows[0] : null;
 };
 
 // Middleware
@@ -118,7 +80,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     try {
-        const user = await getDbRow(`SELECT * FROM users WHERE username = ?`, [username]);
+        const user = await getDbRow(`SELECT * FROM users WHERE username = $1`, [username]);
         if (!user) {
             return res.status(401).json({ success: false, message: 'Invalid credentials.' });
         }
@@ -167,6 +129,61 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ==========================================
+   EVENTS & GALLERY MODULE
+========================================== */
+
+app.get('/api/events', async (req, res) => {
+    try {
+        const { rows } = await queryDb(`SELECT * FROM events ORDER BY created_at DESC`);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/events', requireTeacher, upload.single('event_image'), async (req, res) => {
+    const { gallery_target, title, event_date, description, image_url } = req.body;
+    let finalImageUrl = image_url || '';
+
+    if (req.file) {
+        finalImageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    if (!title || !description || !gallery_target) {
+        return res.status(400).json({ error: 'Gallery target, title, and description are required.' });
+    }
+
+    try {
+        await queryDb(
+            `INSERT INTO events (gallery_target, title, event_date, description, image_url) VALUES ($1, $2, $3, $4, $5)`,
+            [gallery_target, title, event_date || '', description, finalImageUrl]
+        );
+        res.json({ message: 'Event / Gallery post published successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete('/api/events/:id', requireTeacher, async (req, res) => {
+    try {
+        const event = await getDbRow(`SELECT * FROM events WHERE id = $1`, [req.params.id]);
+        if (!event) return res.status(404).json({ error: 'Event not found.' });
+
+        if (event.image_url && event.image_url.startsWith('/uploads/')) {
+            const filePath = path.join(__dirname, event.image_url);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        await queryDb(`DELETE FROM events WHERE id = $1`, [req.params.id]);
+        res.json({ success: true, message: 'Event post deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/* ==========================================
    USER ADMISSIONS & MANAGING USERS
 ========================================== */
 
@@ -184,7 +201,7 @@ app.post('/api/users/student', async (req, res) => {
         const hash = bcrypt.hashSync(pin, 10);
 
         await queryDb(
-            `INSERT INTO users (system_id, full_name, email, role, detail, username, password_hash, pin) VALUES (?, ?, ?, 'Student', ?, ?, ?, ?)`,
+            `INSERT INTO users (system_id, full_name, email, role, detail, username, password_hash, pin) VALUES ($1, $2, $3, 'Student', $4, $5, $6, $7)`,
             [admissionNo, name, email, studentClass, admissionNo, hash, pin]
         );
 
@@ -221,10 +238,9 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
-// DELETE User Account (Admin Only)
 app.delete('/api/users/:id', requireAdmin, async (req, res) => {
     try {
-        await queryDb(`DELETE FROM users WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM users WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'User deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -258,7 +274,7 @@ app.post('/api/videos', requireAdmin, upload.single('video_file'), async (req, r
 
     try {
         await queryDb(
-            `INSERT INTO videos (title, category, description, file_url) VALUES (?, ?, ?, ?)`,
+            `INSERT INTO videos (title, category, description, file_url) VALUES ($1, $2, $3, $4)`,
             [title, category, description, fileUrl]
         );
         res.json({ message: 'Video uploaded successfully.' });
@@ -267,13 +283,11 @@ app.post('/api/videos', requireAdmin, upload.single('video_file'), async (req, r
     }
 });
 
-// DELETE Uploaded Video or Media Link (Admin Only)
 app.delete('/api/videos/:id', requireAdmin, async (req, res) => {
     try {
-        const video = await getDbRow(`SELECT * FROM videos WHERE id = ?`, [req.params.id]);
+        const video = await getDbRow(`SELECT * FROM videos WHERE id = $1`, [req.params.id]);
         if (!video) return res.status(404).json({ error: 'Video record not found.' });
 
-        // Remove actual video file if stored on server
         if (video.file_url && video.file_url.startsWith('/uploads/')) {
             const filePath = path.join(__dirname, video.file_url);
             if (fs.existsSync(filePath)) {
@@ -281,7 +295,7 @@ app.delete('/api/videos/:id', requireAdmin, async (req, res) => {
             }
         }
 
-        await queryDb(`DELETE FROM videos WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM videos WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'Video post deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -302,7 +316,7 @@ app.post('/api/questions/upload', requireTeacher, async (req, res) => {
     try {
         await queryDb(
             `INSERT INTO questions (teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option, status) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending')`,
             [teacher_name, subject, class_level, question_text, option_a, option_b, option_c, option_d, correct_option]
         );
         res.json({ success: true, message: 'Question submitted for Admin approval.' });
@@ -327,17 +341,16 @@ app.post('/api/admin/approve-question', requireAdmin, async (req, res) => {
     }
 
     try {
-        await queryDb(`UPDATE questions SET status = ? WHERE id = ?`, [action, question_id]);
+        await queryDb(`UPDATE questions SET status = $1 WHERE id = $2`, [action, question_id]);
         res.json({ success: true, message: `Question ${action} successfully.` });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-// DELETE Question (Admin or Teacher)
 app.delete('/api/questions/:id', requireTeacher, async (req, res) => {
     try {
-        await queryDb(`DELETE FROM questions WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM questions WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'Question deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -359,10 +372,10 @@ app.get('/api/questions', async (req, res) => {
     const params = [];
 
     if (subject && class_level) {
-        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM(?)) AND LOWER(TRIM(class_level)) = LOWER(TRIM(?))`;
+        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM($1)) AND LOWER(TRIM(class_level)) = LOWER(TRIM($2))`;
         params.push(subject, class_level);
     } else if (subject) {
-        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM(?))`;
+        sql += ` AND LOWER(TRIM(subject)) = LOWER(TRIM($1))`;
         params.push(subject);
     }
 
@@ -385,11 +398,7 @@ app.post('/api/exams/create', requireTeacher, async (req, res) => {
     }
 
     try {
-        const insertExamSql = isPg 
-            ? `INSERT INTO exams (subject, class_level, term) VALUES (?, ?, ?) RETURNING id`
-            : `INSERT INTO exams (subject, class_level, term) VALUES (?, ?, ?)`;
-        
-        const result = await queryDb(insertExamSql, [subject, classLevel, term]);
+        const result = await queryDb(`INSERT INTO exams (subject, class_level, term) VALUES ($1, $2, $3)`, [subject, classLevel, term]);
         const examId = result.lastID;
 
         for (const q of questions) {
@@ -401,7 +410,7 @@ app.post('/api/exams/create', requireTeacher, async (req, res) => {
             const correct = q.correct || q.correct_option;
 
             await queryDb(
-                `INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'approved')`,
+                `INSERT INTO questions (exam_id, question_text, option_a, option_b, option_c, option_d, correct_option, status) VALUES ($1, $2, $3, $4, $5, $6, $7, 'approved')`,
                 [examId, text, a, b, c, d, correct]
             );
         }
@@ -412,11 +421,10 @@ app.post('/api/exams/create', requireTeacher, async (req, res) => {
     }
 });
 
-// DELETE Exam and associated Questions (Teacher/Admin Only)
 app.delete('/api/exams/:id', requireTeacher, async (req, res) => {
     try {
-        await queryDb(`DELETE FROM questions WHERE exam_id = ?`, [req.params.id]);
-        await queryDb(`DELETE FROM exams WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM questions WHERE exam_id = $1`, [req.params.id]);
+        await queryDb(`DELETE FROM exams WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'Exam and linked questions deleted.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -427,7 +435,7 @@ app.post('/api/exams/submit', async (req, res) => {
     const { studentId, studentName, classLevel, subject, term, answers } = req.body;
 
     try {
-        const { rows: questions } = await queryDb(`SELECT id, correct_option FROM questions WHERE LOWER(TRIM(subject)) = LOWER(TRIM(?)) AND status = 'approved'`, [subject]);
+        const { rows: questions } = await queryDb(`SELECT id, correct_option FROM questions WHERE LOWER(TRIM(subject)) = LOWER(TRIM($1)) AND status = 'approved'`, [subject]);
 
         let score = 0;
         questions.forEach(q => {
@@ -440,13 +448,13 @@ app.post('/api/exams/submit', async (req, res) => {
         const percentage = total > 0 ? ((score / total) * 100).toFixed(2) : 0;
 
         await queryDb(
-            `INSERT INTO exam_results (student_id, student_name, class_level, subject, score, total_questions, percentage) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO exam_results (student_id, student_name, class_level, subject, score, total_questions, percentage) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
             [studentId, studentName, classLevel, subject, score, total, percentage]
         );
 
         if (term) {
             await queryDb(
-                `INSERT INTO student_results (student_id, student_name, class_level, subject, score, total_questions, term) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO student_results (student_id, student_name, class_level, subject, score, total_questions, term) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
                 [studentId, studentName, classLevel, subject, score, total, term]
             );
         }
@@ -466,7 +474,7 @@ app.get('/api/results/check', async (req, res) => {
 
     try {
         const { rows } = await queryDb(
-            `SELECT * FROM student_results WHERE LOWER(TRIM(student_id)) = LOWER(TRIM(?)) AND LOWER(TRIM(term)) = LOWER(TRIM(?)) ORDER BY created_at DESC`,
+            `SELECT * FROM student_results WHERE LOWER(TRIM(student_id)) = LOWER(TRIM($1)) AND LOWER(TRIM(term)) = LOWER(TRIM($2)) ORDER BY created_at DESC`,
             [student_id, term]
         );
         res.json(rows);
@@ -483,14 +491,14 @@ app.post('/api/parent/results', async (req, res) => {
     const { admissionNo, pin } = req.body;
 
     try {
-        const user = await getDbRow(`SELECT * FROM users WHERE username = ? AND role = 'Student'`, [admissionNo]);
+        const user = await getDbRow(`SELECT * FROM users WHERE username = $1 AND role = 'Student'`, [admissionNo]);
         if (!user) return res.status(404).json({ error: 'Student record not found.' });
 
         if (user.pin !== pin && !bcrypt.compareSync(pin, user.password_hash)) {
             return res.status(401).json({ error: 'Invalid Portal PIN.' });
         }
 
-        const { rows: results } = await queryDb(`SELECT * FROM exam_results WHERE student_id = ? ORDER BY date_taken DESC`, [admissionNo]);
+        const { rows: results } = await queryDb(`SELECT * FROM exam_results WHERE student_id = $1 ORDER BY date_taken DESC`, [admissionNo]);
         res.json({ studentName: user.full_name, classLevel: user.detail, results });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -513,17 +521,16 @@ app.post('/api/news', requireTeacher, async (req, res) => {
     }
 
     try {
-        await queryDb(`INSERT INTO news (title, category, body) VALUES (?, ?, ?)`, [title, category, body]);
+        await queryDb(`INSERT INTO news (title, category, body) VALUES ($1, $2, $3)`, [title, category, body]);
         res.json({ message: 'News bulletin posted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-// DELETE News Article (Teacher/Admin Only)
 app.delete('/api/news/:id', requireTeacher, async (req, res) => {
     try {
-        await queryDb(`DELETE FROM news WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM news WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'News post deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -550,7 +557,7 @@ app.post('/api/resources', requireTeacher, upload.single('file'), async (req, re
 
     try {
         await queryDb(
-            `INSERT INTO resources (title, target_class, file_url, file_name) VALUES (?, ?, ?, ?)`,
+            `INSERT INTO resources (title, target_class, file_url, file_name) VALUES ($1, $2, $3, $4)`,
             [title, target_class, file_url, file_name]
         );
         res.json({ message: 'Resource uploaded successfully.', file_url });
@@ -559,13 +566,11 @@ app.post('/api/resources', requireTeacher, upload.single('file'), async (req, re
     }
 });
 
-// DELETE Download Resource File (Teacher/Admin Only)
 app.delete('/api/resources/:id', requireTeacher, async (req, res) => {
     try {
-        const resource = await getDbRow(`SELECT * FROM resources WHERE id = ?`, [req.params.id]);
+        const resource = await getDbRow(`SELECT * FROM resources WHERE id = $1`, [req.params.id]);
         if (!resource) return res.status(404).json({ error: 'Resource file not found.' });
 
-        // Unlink physical document from /uploads folder
         if (resource.file_url && resource.file_url.startsWith('/uploads/')) {
             const filePath = path.join(__dirname, resource.file_url);
             if (fs.existsSync(filePath)) {
@@ -573,7 +578,7 @@ app.delete('/api/resources/:id', requireTeacher, async (req, res) => {
             }
         }
 
-        await queryDb(`DELETE FROM resources WHERE id = ?`, [req.params.id]);
+        await queryDb(`DELETE FROM resources WHERE id = $1`, [req.params.id]);
         res.json({ success: true, message: 'Resource document deleted successfully.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
